@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Eh-Ho</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="label_login">Login</string>
+    <string name="label_topics">Topics</string>
+    <string name="label_create_new_account">Create new account</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="label_sign_up">Sign up</string>
+    <string name="label_sign_in">Sign in</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_author">Author</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_content">Content</string>
+    <string name="title_send">Send</string>
+    <string name="error_empty">This field cannot be empty</string>
+    <string name="error_username_empty">Username cannot be empty</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="error_email_empty">E-mail cannot be empty</string>
+    <string name="error_title_empty">Title cannot be empty</string>
+    <string name="error_content_empty">Content cannot be empty</string>
+    <string name="error_unknown">Unknown error</string>
+
+    <string name="minutes_zero">Just now</string>
+    <string name="error_password_length">Password must be at least 10 characters</string>
+    <string name="error_password_match">The passwords doesn\'t match</string>
+    <string name="label_loading">Loading</string>
+    <string name="title_log_out">Log out</string>
+    <string name="error_not_registered">User not registered</string>
+    <string name="error_network">No internet connection, check it and try again</string>
+    <string name="error_request_default">We\'re sorry, something bad happened, try again later</string>
+    <string name="error_invalid_response">Invalid response from server</string>
+    <string name="label_default_error">Oops something bad happened</string>
+    <string name="label_retry">Retry</string>
+    <string name="label_create_topic">Create topic</string>
+    <string name="message_topic_created">Topic created successfully</string>
+    <string name="error_topic_not_created">Oops! Topic not created</string>
+    <string name="label_create_post">Creando post</string>
+
+
+    <plurals name="years">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="title_activity_topics">TopicsActivity</string>
+    <string name="title_activity_posts">PostsActivity</string>
+
+
+</resources>
