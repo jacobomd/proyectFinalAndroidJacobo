@@ -6,7 +6,6 @@ import io.keepcoding.eh_ho.BuildConfig
 import org.json.JSONObject
 
 class UserRequest (
-    private var username: String,
     method: Int,
     url: String,
     body: JSONObject?,
@@ -17,7 +16,7 @@ class UserRequest (
         override fun getHeaders(): MutableMap<String, String> {
             val headers = mutableMapOf<String, String>()
             headers["Api-Key"] = BuildConfig.DiscourseApiKey
-            headers["Api-Username"] = username
+            headers["Api-Username"] = "jacobomd"
 
             return headers
         }
