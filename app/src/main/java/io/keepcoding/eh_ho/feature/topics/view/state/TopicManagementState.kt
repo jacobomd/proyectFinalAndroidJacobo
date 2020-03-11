@@ -8,4 +8,6 @@ sealed class TopicManagementState {
     object Loading : TopicManagementState()
     class LoadTopicList(val topicList: List<Topic>) : TopicManagementState()
     class RequestErrorReported(val requestError: RequestError) : TopicManagementState()
+    object NavigateToLoginIn: TopicManagementState()
+    object NavigateToCreateTopic: TopicManagementState()
 }

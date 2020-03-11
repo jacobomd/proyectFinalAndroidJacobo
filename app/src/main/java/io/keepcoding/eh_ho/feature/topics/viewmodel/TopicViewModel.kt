@@ -43,19 +43,28 @@ class TopicViewModel : ViewModel() {
         fetchTopicsAndHandleResponse(context = context)
     }
 
+    fun onSwipeRefreshLayoutClicked(context: Context?) {
+        _topicManagementState.value = TopicManagementState.Loading
+        fetchTopicsAndHandleResponse(context = context)
+    }
+
     // Navigate to topic detail view and display associated data
     fun onTopicSelected(topic: Topic) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("topic seleccionadooo")
     }
 
     fun onCreateTopicButtonClicked() {
-        //_topicManagementState.value = TopicManagementState.NavigateToCreateTopic
+        _topicManagementState.value = TopicManagementState.NavigateToCreateTopic
+        println("create topic seleccionadooo")
     }
 
-    fun onLogOutOptionClicked(context: Context) {
-
+    fun onLogIn_OutOptionClicked () {
+        _topicManagementState.value = TopicManagementState.NavigateToLoginIn
     }
 
+    fun onSearchOptionClicked () {
+        println("search button menu seleccionadooo")
+    }
 
     private fun fetchTopicsAndHandleResponse(context: Context?) {
         context?.let {

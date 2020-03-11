@@ -1,13 +1,18 @@
 package io.keepcoding.eh_ho.feature.topics.view.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import io.keepcoding.eh_ho.R
+import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
 import io.keepcoding.eh_ho.domain.Topic
+import io.keepcoding.eh_ho.feature.login.LoginActivity
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
 import io.keepcoding.eh_ho.feature.topics.viewmodel.TopicViewModel
 
@@ -23,7 +28,7 @@ TopicsFragment.TopicsInteractionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topics)
         setSupportActionBar(toolbar)
-
+        setTitle(R.string.title_list_topics)
         initModel()
 
         if (savedInstanceState == null) {
@@ -38,12 +43,9 @@ TopicsFragment.TopicsInteractionListener {
 
     }
 
+
     override fun onTopicSelected(topic: Topic) {
         topicViewModel.onTopicSelected(topic = topic)
-    }
-
-    override fun onLogOutOptionClicked() {
-        topicViewModel.onLogOutOptionClicked(context = this)
     }
 
     override fun onRetryButtonClicked() {
@@ -59,8 +61,24 @@ TopicsFragment.TopicsInteractionListener {
     }
 
     override fun onSwipeRefreshLayoutClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        topicViewModel.onSwipeRefreshLayoutClicked(context = this)
     }
+
+    override fun onLogIn_OutOptionClicked() {
+        topicViewModel.onLogIn_OutOptionClicked()
+    }
+
+    override fun onLogOutClicked() {
+        UserRepo.logOut(this)
+        supportFragmentManager.beginTransaction().replace(
+            R.id.fragmentContainer,
+            TopicsFragment(),
+            TOPICS_FRAGMENT_TAG
+        ).commit()
+    }
+
+    override fun onSearchOptionClicked() {
+        topicViewModel.onSearchOptionClicked()    }
 
     private fun initModel() {
         topicViewModel.topicManagementState.observe(this, Observer { state ->
@@ -68,9 +86,21 @@ TopicsFragment.TopicsInteractionListener {
                 TopicManagementState.Loading -> enableLoadingView()
                 is TopicManagementState.LoadTopicList -> loadTopicList(list = state.topicList)
                 is TopicManagementState.RequestErrorReported -> showRequestError(error = state.requestError)
+                is TopicManagementState.NavigateToLoginIn -> navigateToLoginIn()
+                is TopicManagementState.NavigateToCreateTopic -> navigateToCreateTopic()
             }
         })
     }
+
+    private fun navigateToCreateTopic() {
+            print("Navegar hacia la vista del create topic")
+    }
+
+    private fun navigateToLoginIn() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
 
     private fun enableLoadingView() {
         getTopicsFragmentIfAvailableOrNull()?.enableLoading(enabled = true)

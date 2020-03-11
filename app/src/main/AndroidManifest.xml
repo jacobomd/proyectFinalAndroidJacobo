@@ -14,9 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".feature.login.LoginActivity"></activity>
         <activity
             android:name=".feature.posts.view.ui.PostsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".feature.topics.view.ui.TopicsActivity"
             android:theme="@style/AppTheme.NoActionBar">

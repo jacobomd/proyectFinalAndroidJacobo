@@ -5,10 +5,12 @@
     <string name="label_login">Login</string>
     <string name="label_topics">Topics</string>
     <string name="label_create_new_account">Create new account</string>
+    <string name="label_reset_password">I forgot my password</string>
     <string name="hint_email">Email</string>
     <string name="hint_confirm_password">Confirm password</string>
     <string name="label_sign_up">Sign up</string>
     <string name="label_sign_in">Sign in</string>
+    <string name="label_goTo_signin">go to sign in</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_author">Author</string>
@@ -37,7 +39,7 @@
     <string name="label_create_topic">Create topic</string>
     <string name="message_topic_created">Topic created successfully</string>
     <string name="error_topic_not_created">Oops! Topic not created</string>
-    <string name="label_create_post">Creando post</string>
+    <string name="title_list_topics">Topics</string>
 
 
     <plurals name="years">
