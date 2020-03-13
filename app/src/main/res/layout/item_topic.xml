@@ -1,85 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ImageButton
+        android:id="@+id/imagButtAvatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@null"
+        android:src="@drawable/avatar_3x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/labelTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/labelTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="2"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:text="Title"
-        android:maxLines="2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/iconPosts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagButtAvatar"
         app:layout_constraintTop_toTopOf="parent"
+        tools:text="Title" />
 
-        />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="Just now"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/labelTitle"
-        android:id="@+id/label_date"
-        />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iconDate"
+        app:layout_constraintStart_toEndOf="@+id/iconDate"
+        app:layout_constraintTop_toTopOf="@+id/iconDate"
+        tools:text="Just now" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/iconPosts"
-        app:srcCompat="@drawable/ic_post"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toStartOf="@id/iconViews"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/labelPosts"
-        app:layout_constraintVertical_chainStyle="packed"
-    />
-
-    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagButtAvatar"
+        app:srcCompat="@drawable/ic_post" />
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconViews"
-        app:srcCompat="@drawable/ic_views"
-        app:layout_constraintStart_toEndOf="@id/iconPosts"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/labelPosts"
+        app:layout_constraintStart_toEndOf="@+id/labelPosts"
+        app:layout_constraintTop_toTopOf="@+id/labelPosts"
+        app:srcCompat="@drawable/ic_views" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/labelPosts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/iconPosts"
-        app:layout_constraintEnd_toEndOf="@id/iconPosts"
-        app:layout_constraintTop_toBottomOf="@id/iconPosts"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="512"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iconPosts"
+        app:layout_constraintStart_toEndOf="@+id/iconPosts"
+        app:layout_constraintTop_toTopOf="@+id/iconPosts"
+        tools:text="512" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/labelViews"
+        app:layout_constraintStart_toEndOf="@+id/labelViews"
+        app:layout_constraintTop_toTopOf="@+id/labelViews"
+        app:srcCompat="@drawable/ic_date" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/labelViews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/iconViews"
-        app:layout_constraintEnd_toEndOf="@id/iconViews"
-        app:layout_constraintTop_toBottomOf="@id/iconViews"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="512"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iconViews"
+        app:layout_constraintStart_toEndOf="@+id/iconViews"
+        app:layout_constraintTop_toTopOf="@+id/iconViews"
+        tools:text="512" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

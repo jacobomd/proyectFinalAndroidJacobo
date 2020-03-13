@@ -23,9 +23,9 @@ class TopicViewModel : ViewModel() {
         _topicManagementState.value = TopicManagementState.Loading
         TopicsRepo.getTopics(
             context,
-            { topics ->
+            { topics, users->
                 _topicManagementState.value =
-                    TopicManagementState.LoadTopicList(topicList = topics)
+                    TopicManagementState.LoadTopicList(topicList = topics, userByTopic = users)
             },
             { error ->
                 _topicManagementState.value =
@@ -53,6 +53,11 @@ class TopicViewModel : ViewModel() {
         println("topic seleccionadooo")
     }
 
+    fun onAvatarSelected(username: String, context: Context) {
+        fetchDetailUser(username = username, context = context)
+    }
+
+
     fun onCreateTopicButtonClicked() {
         _topicManagementState.value = TopicManagementState.NavigateToCreateTopic
         println("create topic seleccionadooo")
@@ -66,12 +71,26 @@ class TopicViewModel : ViewModel() {
         println("search button menu seleccionadooo")
     }
 
+    private fun fetchDetailUser(username: String, context: Context) {
+        context.let {
+            TopicsRepo.getDetailUser(it, username,
+                { detail ->
+                    _topicManagementState.value = TopicManagementState.DetailUserList(detail = detail)
+                },
+                { error ->
+                    _topicManagementState.value =
+                        TopicManagementState.RequestErrorReported(requestError = error)
+                }
+                )
+        }
+    }
+
     private fun fetchTopicsAndHandleResponse(context: Context?) {
         context?.let {
             TopicsRepo.getTopics(it,
-                { topics ->
+                { topics, users ->
                     _topicManagementState.value =
-                        TopicManagementState.LoadTopicList(topicList = topics)
+                        TopicManagementState.LoadTopicList(topicList = topics, userByTopic = users)
                 },
                 { error ->
                     _topicManagementState.value =
@@ -79,5 +98,7 @@ class TopicViewModel : ViewModel() {
                 })
         }
     }
+
+
 
 }

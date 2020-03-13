@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
+import io.keepcoding.eh_ho.domain.DetailUser
 import io.keepcoding.eh_ho.domain.Topic
+import io.keepcoding.eh_ho.domain.User
 import io.keepcoding.eh_ho.feature.login.LoginActivity
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
 import io.keepcoding.eh_ho.feature.topics.viewmodel.TopicViewModel
@@ -47,6 +49,9 @@ TopicsFragment.TopicsInteractionListener {
     override fun onTopicSelected(topic: Topic) {
         topicViewModel.onTopicSelected(topic = topic)
     }
+
+    override fun onAvatarSelected(username: String) {
+        topicViewModel.onAvatarSelected(username = username, context = this)    }
 
     override fun onRetryButtonClicked() {
         topicViewModel.onRetryButtonClicked(context = this)
@@ -84,12 +89,18 @@ TopicsFragment.TopicsInteractionListener {
         topicViewModel.topicManagementState.observe(this, Observer { state ->
             when (state) {
                 TopicManagementState.Loading -> enableLoadingView()
-                is TopicManagementState.LoadTopicList -> loadTopicList(list = state.topicList)
+                is TopicManagementState.LoadTopicList -> loadTopicList(list = state.topicList, user = state.userByTopic)
+                is TopicManagementState.DetailUserList -> loadDetailUser(detail = state.detail)
                 is TopicManagementState.RequestErrorReported -> showRequestError(error = state.requestError)
                 is TopicManagementState.NavigateToLoginIn -> navigateToLoginIn()
                 is TopicManagementState.NavigateToCreateTopic -> navigateToCreateTopic()
+                is TopicManagementState.NavigateToDetailUser -> navigateToDetailUser(username = state.username)
             }
         })
+    }
+
+    private fun navigateToDetailUser(username: String) {
+
     }
 
     private fun navigateToCreateTopic() {
@@ -113,10 +124,16 @@ TopicsFragment.TopicsInteractionListener {
         }
     }
 
-    private fun loadTopicList(list: List<Topic>) {
+    private fun loadTopicList(list: List<Topic>, user: List<User>) {
         getTopicsFragmentIfAvailableOrNull()?.run {
             enableLoading(enabled = false)
-            loadTopicList(topicList = list)
+            loadTopicList(topicList = list, userByTopic = user)
+        }
+    }
+
+    private fun loadDetailUser(detail: DetailUser) {
+        getTopicsFragmentIfAvailableOrNull()?.run {
+            showDialogAlert(detail)
         }
     }
 

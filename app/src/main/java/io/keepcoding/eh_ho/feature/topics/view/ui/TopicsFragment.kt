@@ -1,8 +1,10 @@
 package io.keepcoding.eh_ho.feature.topics.view.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
@@ -11,11 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.makeramen.roundedimageview.RoundedTransformationBuilder
+import com.squareup.picasso.Picasso
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
+import io.keepcoding.eh_ho.domain.DetailUser
 import io.keepcoding.eh_ho.domain.Topic
+import io.keepcoding.eh_ho.domain.User
 import io.keepcoding.eh_ho.feature.topics.view.adapter.TopicsAdapter
+import kotlinx.android.synthetic.main.detail_user_dialog.*
 import kotlinx.android.synthetic.main.fragment_topics.*
 import kotlinx.android.synthetic.main.view_retry.*
 import java.lang.RuntimeException
@@ -42,7 +49,12 @@ class TopicsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        topicsAdapter = TopicsAdapter { topicItemClicked(it) }
+        topicsAdapter = TopicsAdapter(topicClickListener = {
+            topicItemClicked(it)
+        }, avatarClickListenter = {
+            avatarItemClicked(it)
+        })
+
 
     }
 
@@ -119,10 +131,15 @@ class TopicsFragment : Fragment() {
 
     }
 
+    fun showDialogAlert(detailUser: DetailUser) {
+        alertDialogDetailUser(username = detailUser.username, name = detailUser.name, moderator = detailUser.moderator,
+            lastSeen = detailUser.last_seen_at, privateMessag = "0", avatar= detailUser.avatar_template)
+    }
 
-    fun loadTopicList(topicList: List<Topic>) {
+
+    fun loadTopicList(topicList: List<Topic>, userByTopic: List<User>) {
         enableLoading(false)
-        topicsAdapter.setTopics(topics = topicList)
+        topicsAdapter.setTopics(topics = topicList, users = userByTopic)
         swipeRefreshLayout.isRefreshing = false
     }
 
@@ -192,6 +209,36 @@ class TopicsFragment : Fragment() {
         dialog.show()
     }
 
+    private fun alertDialogDetailUser (username: String,
+                                       name: String,
+                                       moderator: String,
+                                       lastSeen: String,
+                                       privateMessag: String,
+                                       avatar: String
+                                       )
+    {
+
+        //Inflate the dialog with custom view
+        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.detail_user_dialog, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(requireContext())
+            .setView(mDialogView)
+        //show dialog
+        val mAlertDialog = mBuilder.show()
+
+        val avatarImag = avatar
+        val avatarFinal = avatarImag.replace("{size}", "150")
+        val image = "https://mdiscourse.keepcoding.io/${avatarFinal}"
+        loadImage(image, mAlertDialog.imgAvatar)
+
+        mAlertDialog.txrUserName.text = username
+        mAlertDialog.txtName.text = name
+        mAlertDialog.txtModerator.text = moderator
+        mAlertDialog.txtLastseen.text = lastSeen.toString()
+        mAlertDialog.txtPrivateMessag.text = privateMessag
+
+    }
+
 
     fun enableLoading(enabled: Boolean) {
         viewRetry.visibility = View.INVISIBLE
@@ -223,10 +270,30 @@ class TopicsFragment : Fragment() {
         Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG).show()
     }
 
+    private fun loadImage (data : String, image: ImageView) {
+
+        val transformation = RoundedTransformationBuilder()
+            .borderColor(Color.BLACK)
+            .borderWidthDp(0F)
+            .cornerRadiusDp(60F)
+            .oval(false)
+            .build()
+
+        Picasso.with(requireContext())
+            .load(data)
+            .fit()
+            .transform(transformation)
+            .into(image)
+    }
+
 
     private fun topicItemClicked(topic: Topic) {
         listener?.onTopicSelected(topic)
 
+    }
+
+    private fun avatarItemClicked(username: String) {
+        listener?.onAvatarSelected(username)
     }
 
     interface TopicsInteractionListener {
@@ -238,6 +305,7 @@ class TopicsFragment : Fragment() {
         fun onLogIn_OutOptionClicked()
         fun onSearchOptionClicked()
         fun onLogOutClicked()
+        fun onAvatarSelected(username: String)
     }
 
 }
