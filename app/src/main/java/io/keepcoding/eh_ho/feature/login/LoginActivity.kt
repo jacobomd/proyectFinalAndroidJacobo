@@ -4,10 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
+import io.keepcoding.eh_ho.domain.ResetPasswordModel
 import io.keepcoding.eh_ho.domain.SignModel
 import io.keepcoding.eh_ho.domain.SignUpModel
 import io.keepcoding.eh_ho.feature.topics.view.ui.TopicsActivity
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity(),
     SignInFragment.SignInInteractionListener,
     SignUpFragment.SignUpInteractionListener {
+
 
     val signInFragment: SignInFragment =
         SignInFragment()
@@ -86,6 +89,39 @@ class LoginActivity : AppCompatActivity(),
             }
         )
     }
+
+    override fun onResetPassword(model: ResetPasswordModel) {
+
+        enableLoading(enable = true)
+        UserRepo.resetPassword(
+            this,
+            model,
+            {
+                enableLoading(enable = false)
+                if (it != null) {
+                    showAlertEmailSent(it.login)
+                }
+
+            },
+            {
+                enableLoading(enable = false)
+                handleRequestError(it)
+            }
+        )
+    }
+
+    private fun showAlertEmailSent(login: String) {
+        val builder = AlertDialog.Builder(this)
+
+        with(builder)
+        {
+            setMessage("We found an account that matches the username ${login}," +
+                    " you should receive an email with instructions on how to reset your password shortly.")
+            setPositiveButton("OK") { dialog, i ->
+                launchTopicsActivity()
+                dialog.dismiss()}
+            show()
+        }    }
 
     private fun handleRequestError(requestError: RequestError) {
         val message = if (requestError.messageId != null)

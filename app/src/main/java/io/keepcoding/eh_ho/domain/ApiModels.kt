@@ -34,6 +34,15 @@ data class CreateTopicModel(
     }
 }
 
+data class ResetPasswordModel(
+    val login: String
+) {
+    fun toJson(): JSONObject {
+        return JSONObject()
+            .put("login", login)
+    }
+}
+
 data class CreatePostModel(
     val content: String,
     val topic_id: Int

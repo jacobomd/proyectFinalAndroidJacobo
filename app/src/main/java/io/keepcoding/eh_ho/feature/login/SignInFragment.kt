@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import io.keepcoding.eh_ho.R
+import io.keepcoding.eh_ho.domain.ResetPasswordModel
 import io.keepcoding.eh_ho.domain.SignModel
+import kotlinx.android.synthetic.main.dialog_resetpassw_edittext.view.*
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 
@@ -40,12 +43,28 @@ class SignInFragment: Fragment() {
             }
             buttonLogin.setOnClickListener {
                 signIn()
-                println("boton de signIn pulsadooo")
             }
            labelResetPassword.setOnClickListener {
-               println ("label de reset password pulsadoooo")
+               resetPasswordAlertDialog()
            }
         }
+    }
+
+    private fun resetPasswordAlertDialog() {
+
+        //AlertDialogBuilder
+        val builder = AlertDialog.Builder(requireContext())
+
+        val inflater = layoutInflater
+        builder.setMessage("Enter your username or email, and we'll send you a password reset email")
+        val dialogLayout = inflater.inflate(R.layout.dialog_resetpassw_edittext, null)
+        val editTextLogin  = dialogLayout.editTextLogin
+        builder.setView(dialogLayout)
+        builder.setPositiveButton("Reset Password") {
+                dialogInterface, i -> listener?.onResetPassword(ResetPasswordModel(login = editTextLogin.text.toString()))
+        }
+        builder.show()
+
     }
 
     private fun signIn () {
@@ -79,6 +98,7 @@ class SignInFragment: Fragment() {
     interface  SignInInteractionListener {
         fun onGoToSignUp()
         fun onSignIn(userName: SignModel)
+        fun onResetPassword(model: ResetPasswordModel)
     }
 
 }

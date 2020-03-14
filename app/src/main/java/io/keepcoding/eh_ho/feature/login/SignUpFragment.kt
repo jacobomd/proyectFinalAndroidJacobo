@@ -33,8 +33,8 @@ class SignUpFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        buttonSignUp.setOnClickListener { signUp()}
-        labelSignIn.setOnClickListener { goToSignIn() }
+        buttonSignUp.setOnClickListener {signUp()}
+        labelSignIn.setOnClickListener {goToSignIn()}
     }
 
     private fun goToSignIn() {

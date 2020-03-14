@@ -10,12 +10,11 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import io.keepcoding.eh_ho.R
-import io.keepcoding.eh_ho.data.service.AdminRequest
-import io.keepcoding.eh_ho.data.service.ApiRequestQueue
-import io.keepcoding.eh_ho.data.service.ApiRoutes
-import io.keepcoding.eh_ho.data.service.RequestError
+import io.keepcoding.eh_ho.data.service.*
+import io.keepcoding.eh_ho.domain.ResetPasswordModel
 import io.keepcoding.eh_ho.domain.SignModel
 import io.keepcoding.eh_ho.domain.SignUpModel
+import org.json.JSONObject
 
 const val PREFERENCES_SESSION = "session"
 const val PREFERENCES_SESSION_USERNAME = "username"
@@ -100,6 +99,53 @@ object UserRepo {
         ApiRequestQueue.getRequesteQueue(context)
             .add(request)
 
+    }
+
+    fun resetPassword(
+        context: Context,
+        model: ResetPasswordModel,
+        onSuccess: (ResetPasswordModel) -> Unit,
+        onError: (RequestError) -> Unit
+    ) {
+        val request = UserRequest(
+
+            Request.Method.POST,
+            ApiRoutes.resetPassword(),
+            model.toJson(),
+            {
+                it?.let {
+                    onSuccess.invoke(model)
+                }
+
+                if (it == null)
+                    onError.invoke(RequestError(messageId = R.string.error_invalid_response))
+            },
+            {
+                it.printStackTrace()
+
+                if (it is ServerError && it.networkResponse.statusCode == 422) {
+                    val body = String(it.networkResponse.data, Charsets.UTF_8)
+                    val jsonError = JSONObject(body)
+                    val errors = jsonError.getJSONArray("errors")
+                    var errorMessage = ""
+
+                    for (i in 0 until errors.length()) {
+                        errorMessage += "${errors[i]} "
+                    }
+
+                    onError.invoke(RequestError(it, message = errorMessage))
+
+
+                }
+
+                else if (it is NetworkError)
+                    onError.invoke(RequestError(it, messageId = R.string.error_network))
+                else
+                    onError.invoke(RequestError(it))
+            }
+        )
+        ApiRequestQueue.getRequesteQueue(context)
+            .add(request)
     }
 
 

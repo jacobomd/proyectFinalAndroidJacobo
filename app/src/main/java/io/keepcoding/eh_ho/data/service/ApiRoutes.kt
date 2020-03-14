@@ -31,6 +31,13 @@ object ApiRoutes {
             .build()
             .toString()
 
+    fun resetPassword() =
+        uriBuilder()
+            .appendPath("session")
+            .appendPath("forgot_password")
+            .build()
+            .toString()
+
 
     fun createTopic() =
         uriBuilder()
