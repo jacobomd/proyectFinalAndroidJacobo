@@ -50,7 +50,7 @@ class TopicViewModel : ViewModel() {
 
     // Navigate to topic detail view and display associated data
     fun onTopicSelected(topic: Topic) {
-        println("topic seleccionadooo")
+        _topicManagementState.value = TopicManagementState.NavigateToPostsOfTopic(topic)
     }
 
     fun onAvatarSelected(username: String, context: Context) {

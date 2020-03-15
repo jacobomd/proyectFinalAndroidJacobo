@@ -25,7 +25,6 @@ class TopicsAdapter (
 
     private val listener : ((View) -> Unit) = {
         val topic = it.tag as Topic
-        //Log.d(TopicsAdapter::class.java.simpleName, latestNew.toString())
         topicClickListener?.invoke(topic)
     }
 

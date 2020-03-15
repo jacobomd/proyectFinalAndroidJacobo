@@ -13,5 +13,5 @@ sealed class TopicManagementState {
     class RequestErrorReported(val requestError: RequestError) : TopicManagementState()
     object NavigateToLoginIn: TopicManagementState()
     object NavigateToCreateTopic: TopicManagementState()
-    class NavigateToDetailUser(val username: String) : TopicManagementState()
+    class NavigateToPostsOfTopic(val topic: Topic) : TopicManagementState()
 }

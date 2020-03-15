@@ -40,6 +40,7 @@
     <string name="message_topic_created">Topic created successfully</string>
     <string name="error_topic_not_created">Oops! Topic not created</string>
     <string name="title_list_topics">Topics</string>
+    <string name="label_create_post">Creando post</string>
 
 
     <plurals name="years">

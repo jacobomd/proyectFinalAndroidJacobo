@@ -199,3 +199,61 @@ data class DetailUser(
 
     }
 }
+
+data class Post(
+    val id: String = UUID.randomUUID().toString(),
+    val username: String,
+    val cooked: String,
+    val createdAt: String
+
+) {
+    companion object {
+
+
+        fun parsePosts(response: JSONObject): List<Post> {
+            val jsonPosts = response.getJSONObject("post_stream")
+                .getJSONArray("posts")
+
+            val posts = mutableListOf<Post>()
+
+
+            for (i in 0 until jsonPosts.length()) {
+                val parsedPost =
+                    parsePost(jsonPosts.getJSONObject(i))
+                posts.add(parsedPost)
+            }
+
+            return posts
+        }
+
+        private fun parsePost(jsonObject: JSONObject): Post {
+            val date = jsonObject.getString("created_at")
+                .replace("Z", "+0000")
+
+            val dateFormatted = convertDate(date)
+
+            val content = jsonObject.getString("cooked")
+                .replace("<p>", "")
+                .replace("</p>", "")
+
+            return Post(
+                jsonObject.getInt("id").toString(),
+                jsonObject.getString("username"),
+                content,
+                dateFormatted
+
+            )
+        }
+
+
+        private fun convertDate(date: String): String {
+            val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+            val targetFormat = SimpleDateFormat("MMM dd, yyyy")
+            val dateResult = originalFormat.parse(date)
+            val formattedDate = targetFormat.format(dateResult)
+            return formattedDate
+        }
+
+
+    }
+}

@@ -2,9 +2,6 @@ package io.keepcoding.eh_ho.feature.topics.view.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,10 +12,12 @@ import io.keepcoding.eh_ho.domain.DetailUser
 import io.keepcoding.eh_ho.domain.Topic
 import io.keepcoding.eh_ho.domain.User
 import io.keepcoding.eh_ho.feature.login.LoginActivity
+import io.keepcoding.eh_ho.feature.posts.view.EXTRA_TOPIC_ID
+import io.keepcoding.eh_ho.feature.posts.view.EXTRA_TOPIC_TITLE
+import io.keepcoding.eh_ho.feature.posts.view.PostsActivity
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
 import io.keepcoding.eh_ho.feature.topics.viewmodel.TopicViewModel
 
-import kotlinx.android.synthetic.main.activity_topics.*
 import kotlinx.android.synthetic.main.content_topic.*
 
 class TopicsActivity : AppCompatActivity(),
@@ -94,14 +93,11 @@ TopicsFragment.TopicsInteractionListener {
                 is TopicManagementState.RequestErrorReported -> showRequestError(error = state.requestError)
                 is TopicManagementState.NavigateToLoginIn -> navigateToLoginIn()
                 is TopicManagementState.NavigateToCreateTopic -> navigateToCreateTopic()
-                is TopicManagementState.NavigateToDetailUser -> navigateToDetailUser(username = state.username)
+                is TopicManagementState.NavigateToPostsOfTopic -> navigateToPostsOfTopic(topic = state.topic)
             }
         })
     }
 
-    private fun navigateToDetailUser(username: String) {
-
-    }
 
     private fun navigateToCreateTopic() {
             print("Navegar hacia la vista del create topic")
@@ -146,6 +142,16 @@ TopicsFragment.TopicsInteractionListener {
         } else {
             null
         }
+    }
+
+    private fun navigateToPostsOfTopic(topic: Topic) {
+        val intent = Intent(this, PostsActivity::class.java)
+
+        intent.putExtra(EXTRA_TOPIC_ID, topic.id)
+        intent.putExtra(EXTRA_TOPIC_TITLE, topic.title)
+
+        startActivity(intent)
+        finish()
     }
 
 }
