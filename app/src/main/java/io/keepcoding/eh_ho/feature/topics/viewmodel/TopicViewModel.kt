@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.TopicsRepo
+import io.keepcoding.eh_ho.domain.CreateTopicModel
 import io.keepcoding.eh_ho.domain.Topic
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
+import io.keepcoding.eh_ho.feature.topics.view.ui.TopicsActivity
 
 class TopicViewModel : ViewModel() {
 
@@ -99,6 +102,49 @@ class TopicViewModel : ViewModel() {
         }
     }
 
+    fun onCreateTopicOptionClicked(context: Context, createTopicModel: CreateTopicModel) {
+
+        if (isValidCreateTopicForm(model = createTopicModel)) {
+            _topicManagementState.value = TopicManagementState.CreateTopicLoading
+            TopicsRepo.createTopic(
+                context = context,
+                model = createTopicModel,
+                onSuccess = { topicModel ->
+                    _topicManagementState.value = TopicManagementState.CreateTopicCompleted
+                    if (topicModel == createTopicModel) {
+                        _topicManagementState.value =
+                            TopicManagementState.TopicCreatedSuccessfully(msg = context.getString(R.string.message_topic_created))
+                    } else {
+                        _topicManagementState.value =
+                            TopicManagementState.TopicNotCreated(createError = context.getString(R.string.error_topic_not_created))
+                    }
+                },
+                onError = { error ->
+                    _topicManagementState.value = TopicManagementState.CreateTopicCompleted
+                    _topicManagementState.value =
+                        TopicManagementState.RequestErrorReported(requestError = error)
+                }
+            )
+        } else {
+            _topicManagementState.value = TopicManagementState.CreateTopicFormErrorReported(
+                errorMsg = getCreateTopicFormError(context, createTopicModel)
+            )
+        }
+
+    }
+
+    private fun getCreateTopicFormError(context: Context, model: CreateTopicModel): String =
+        with(model) {
+            when {
+                title.isEmpty() -> context.getString(R.string.error_title_empty)
+                content.isEmpty() -> context.getString(R.string.error_content_empty)
+                else -> context.getString(R.string.error_unknown)
+            }
+        }
+
+
+    private fun isValidCreateTopicForm(model: CreateTopicModel): Boolean =
+        with(model) { title.isNotEmpty() && content.isNotEmpty() }
 
 
 }

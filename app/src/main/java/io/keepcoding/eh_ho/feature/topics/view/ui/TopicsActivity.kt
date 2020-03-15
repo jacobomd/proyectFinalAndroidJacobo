@@ -2,12 +2,15 @@ package io.keepcoding.eh_ho.feature.topics.view.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
+import io.keepcoding.eh_ho.domain.CreateTopicModel
 import io.keepcoding.eh_ho.domain.DetailUser
 import io.keepcoding.eh_ho.domain.Topic
 import io.keepcoding.eh_ho.domain.User
@@ -17,11 +20,16 @@ import io.keepcoding.eh_ho.feature.posts.view.EXTRA_TOPIC_TITLE
 import io.keepcoding.eh_ho.feature.posts.view.PostsActivity
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
 import io.keepcoding.eh_ho.feature.topics.viewmodel.TopicViewModel
+import kotlinx.android.synthetic.main.activity_login.*
 
 import kotlinx.android.synthetic.main.content_topic.*
+import kotlinx.android.synthetic.main.content_topic.fragmentContainer
+
+const val TRANSACTION_CREATE_TOPIC = "create_topic"
 
 class TopicsActivity : AppCompatActivity(),
-TopicsFragment.TopicsInteractionListener {
+TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInteractionListener {
+
 
     private val topicViewModel: TopicViewModel by lazy { TopicViewModel() }
 
@@ -49,6 +57,7 @@ TopicsFragment.TopicsInteractionListener {
         topicViewModel.onTopicSelected(topic = topic)
     }
 
+
     override fun onAvatarSelected(username: String) {
         topicViewModel.onAvatarSelected(username = username, context = this)    }
 
@@ -63,6 +72,9 @@ TopicsFragment.TopicsInteractionListener {
     override fun onCreateTopicButtonClicked() {
         topicViewModel.onCreateTopicButtonClicked()
     }
+
+    override fun onCreateTopicOptionClicked(model: CreateTopicModel) {
+        topicViewModel.onCreateTopicOptionClicked(context = this, createTopicModel = model)    }
 
     override fun onSwipeRefreshLayoutClicked() {
         topicViewModel.onSwipeRefreshLayoutClicked(context = this)
@@ -94,13 +106,24 @@ TopicsFragment.TopicsInteractionListener {
                 is TopicManagementState.NavigateToLoginIn -> navigateToLoginIn()
                 is TopicManagementState.NavigateToCreateTopic -> navigateToCreateTopic()
                 is TopicManagementState.NavigateToPostsOfTopic -> navigateToPostsOfTopic(topic = state.topic)
+                is TopicManagementState.TopicCreatedSuccessfully -> showMessage(msg = state.msg)
+                is TopicManagementState.TopicNotCreated -> showError(msg = state.createError)
+                is TopicManagementState.CreateTopicFormErrorReported -> showError(msg = state.errorMsg)
+                TopicManagementState.CreateTopicLoading -> toggleCreateTopicLoadingView(enable = true)
+                TopicManagementState.CreateTopicCompleted -> {
+                    toggleCreateTopicLoadingView(enable = false)
+                    dismissCreateDialogFragment()
+                }
             }
         })
     }
 
 
     private fun navigateToCreateTopic() {
-            print("Navegar hacia la vista del create topic")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, CreateTopicFragment(), CREATE_TOPIC_FRAGMENT_TAG)
+            .addToBackStack(TRANSACTION_CREATE_TOPIC)
+            .commit()
     }
 
     private fun navigateToLoginIn() {
@@ -152,6 +175,35 @@ TopicsFragment.TopicsInteractionListener {
 
         startActivity(intent)
         finish()
+    }
+
+    private fun showError(msg: String) {
+        Snackbar.make(fragmentContainer, msg, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showMessage(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun toggleCreateTopicLoadingView(enable: Boolean) {
+        getCreateTopicFragmentIfAvailableOrNull()?.enableLoadingDialog(enable = enable)
+    }
+
+    private fun dismissCreateDialogFragment() {
+        if (getCreateTopicFragmentIfAvailableOrNull() != null) {
+            supportFragmentManager.popBackStack()
+        }
+    }
+
+    private fun getCreateTopicFragmentIfAvailableOrNull(): CreateTopicFragment? {
+        val fragment: Fragment? =
+            supportFragmentManager.findFragmentByTag(CREATE_TOPIC_FRAGMENT_TAG)
+
+        return if (fragment != null && fragment.isVisible) {
+            fragment as CreateTopicFragment
+        } else {
+            null
+        }
     }
 
 }
