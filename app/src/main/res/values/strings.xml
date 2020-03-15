@@ -14,8 +14,8 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_author">Author</string>
-    <string name="hint_title">Title</string>
-    <string name="hint_content">Content</string>
+    <string name="hint_title">Add a title ...</string>
+    <string name="hint_content">Add a content ...</string>
     <string name="title_send">Send</string>
     <string name="error_empty">This field cannot be empty</string>
     <string name="error_username_empty">Username cannot be empty</string>
@@ -40,6 +40,7 @@
     <string name="message_topic_created">Topic created successfully</string>
     <string name="error_topic_not_created">Oops! Topic not created</string>
     <string name="title_list_topics">Topics</string>
+    <string name="title_list_posts">Posts</string>
     <string name="label_create_post">Creando post</string>
 
 

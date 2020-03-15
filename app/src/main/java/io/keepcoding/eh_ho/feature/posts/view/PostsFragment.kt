@@ -4,12 +4,16 @@ package io.keepcoding.eh_ho.feature.posts.view
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.PostsRepo
+import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
+import io.keepcoding.eh_ho.domain.User
 import kotlinx.android.synthetic.main.fragment_posts.*
 import kotlinx.android.synthetic.main.fragment_posts.parentLayout
 import kotlinx.android.synthetic.main.fragment_posts.viewRetry
@@ -49,6 +53,7 @@ class PostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = "Posts"
 
         val texto = arguments?.getString(EXTRA_TOPIC_ID)
         val topicId = texto?.toInt()
@@ -72,10 +77,38 @@ class PostsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.button_create_post -> listener?.onGoToCreatePost()
+
+        if (item?.itemId == R.id.button_create_post && UserRepo.isLogged(requireContext())) {
+            listener?.onGoToCreatePost()
+        } else {
+            if (item?.itemId == R.id.button_create_post) {
+                showAlertPermission()
+            }
         }
+
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showAlertPermission() {
+        // Initialize a new instance of
+        val builder = AlertDialog.Builder(requireContext())
+
+        // Set the alert dialog title
+        builder.setTitle("Session information")
+
+        // Display a message on alert dialog
+        builder.setMessage("Please log in to perform this action ...")
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setPositiveButton("Ok") { dialog, witch ->
+            dialog.dismiss()
+        }
+
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = builder.create()
+
+        // Display the alert dialog on app interface
+        dialog.show()
     }
 
     private fun loadPost(idTopic: Int) {

@@ -1,8 +1,10 @@
 package io.keepcoding.eh_ho.feature.topics.view.ui
 
+import android.app.ActionBar
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import io.keepcoding.eh_ho.common.LoadingDialogFragment
 import io.keepcoding.eh_ho.R
@@ -41,6 +43,11 @@ class CreateTopicFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_create_topic, container, false)
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = "Create topic"
     }
 
 

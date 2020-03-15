@@ -1,48 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/splash_screen"
     android:padding="16dp">
 
-    <androidx.cardview.widget.CardView
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/inputTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp">
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:hint="@string/hint_title"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/inputContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:gravity="top"
+        android:hint="@string/hint_content"
+        android:minHeight="112dp"
+        android:paddingTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputTitle" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/label_author"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputContent"
+        app:srcCompat="@drawable/logo" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_title"
-                android:id="@+id/inputTitle"
-                />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_content"
-                android:minHeight="112dp"
-                android:gravity="top"
-                android:id="@+id/inputContent"
-                />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

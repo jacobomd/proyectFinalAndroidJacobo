@@ -4,6 +4,7 @@ package io.keepcoding.eh_ho.feature.posts.view
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import io.keepcoding.eh_ho.common.LoadingDialogFragment
@@ -42,7 +43,7 @@ class CreatePostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val topicTitle = arguments?.getString(EXTRA_TOPIC_TITLE)
-        labelTitle.text = topicTitle
+        (activity as AppCompatActivity).supportActionBar?.title = "Create post"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
