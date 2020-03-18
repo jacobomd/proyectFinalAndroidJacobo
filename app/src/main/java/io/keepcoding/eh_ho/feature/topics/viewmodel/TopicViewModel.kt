@@ -144,7 +144,27 @@ class TopicViewModel : ViewModel() {
 
 
     private fun isValidCreateTopicForm(model: CreateTopicModel): Boolean =
-        with(model) { title.isNotEmpty() && content.isNotEmpty() }
+        with(model) { title.isNotEmpty() && content.isNotEmpty()
+    }
 
+    fun onSearchViewQueryText(context: Context, key: String?) {
+        TopicsRepo.getTopics(
+            context,
+            { topicList, userList ->
+                _topicManagementState.value =
+                    TopicManagementState.LoadTopicList(topicList = topicList.filterByKey(key), userByTopic = userList)
+            },
+            { error ->
+                _topicManagementState.value =
+                    TopicManagementState.RequestErrorReported(requestError = error)
+            })
+    }
 
 }
+
+private fun List<Topic>.filterByKey(key: String?): List<Topic> =
+    key?.let { k ->
+        filter { it.title.contains(other = k, ignoreCase = true) }
+    } ?: run {
+        this
+    }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -121,6 +122,21 @@ class TopicsFragment : Fragment() {
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         swipeRefreshLayout.setOnRefreshListener { swipeRefreshLayoutClicked() }
+
+        search_view.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                listener?.onQueryTextSubmit(query = query.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                listener?.onQueryTextChange(newText = newText.toString())
+                return true
+            }
+        })
+        search_view.setOnCloseListener {
+            false
+        }
 
     }
 
@@ -306,6 +322,8 @@ class TopicsFragment : Fragment() {
         fun onSearchOptionClicked()
         fun onLogOutClicked()
         fun onAvatarSelected(username: String)
+        fun onQueryTextSubmit(query: String)
+        fun onQueryTextChange(newText: String)
     }
 
 }

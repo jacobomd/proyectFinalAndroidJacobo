@@ -20,16 +20,14 @@ import io.keepcoding.eh_ho.feature.posts.view.EXTRA_TOPIC_TITLE
 import io.keepcoding.eh_ho.feature.posts.view.PostsActivity
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
 import io.keepcoding.eh_ho.feature.topics.viewmodel.TopicViewModel
-import kotlinx.android.synthetic.main.activity_login.*
-
 import kotlinx.android.synthetic.main.content_topic.*
 import kotlinx.android.synthetic.main.content_topic.fragmentContainer
+
 
 const val TRANSACTION_CREATE_TOPIC = "create_topic"
 
 class TopicsActivity : AppCompatActivity(),
 TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInteractionListener {
-
 
     private val topicViewModel: TopicViewModel by lazy { TopicViewModel() }
 
@@ -38,6 +36,7 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
         setContentView(R.layout.activity_topics)
         setSupportActionBar(toolbar)
         setTitle(R.string.title_list_topics)
+        initView()
         initModel()
 
         if (savedInstanceState == null) {
@@ -94,7 +93,20 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
     }
 
     override fun onSearchOptionClicked() {
-        topicViewModel.onSearchOptionClicked()    }
+        topicViewModel.onSearchOptionClicked()
+    }
+
+    override fun onQueryTextSubmit(query: String) {
+        topicViewModel.onSearchViewQueryText(key = query, context = this )
+    }
+
+    override fun onQueryTextChange(newText: String) {
+        topicViewModel.onSearchViewQueryText(key = newText, context = this)
+    }
+
+    private fun initView() {
+        setSupportActionBar(toolbar)
+    }
 
     private fun initModel() {
         topicViewModel.topicManagementState.observe(this, Observer { state ->
