@@ -14,7 +14,6 @@ data class Topic(
     @SerializedName("posts_count") val posts: Int = 0,
     @SerializedName("views") val views: Int = 0,
     @SerializedName("posters") val posters: List<Poster>
-
 ) {
 
     companion object {

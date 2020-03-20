@@ -70,10 +70,6 @@ class TopicViewModel : ViewModel() {
         _topicManagementState.value = TopicManagementState.NavigateToLoginIn
     }
 
-    fun onSearchOptionClicked () {
-        println("search button menu seleccionadooo")
-    }
-
     private fun fetchDetailUser(username: String, context: Context) {
         context.let {
             TopicsRepo.getDetailUser(it, username,

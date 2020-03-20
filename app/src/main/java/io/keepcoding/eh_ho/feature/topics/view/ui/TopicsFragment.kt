@@ -72,7 +72,6 @@ class TopicsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
                 R.id.action_login -> actionLoginClicked()
-                R.id.action_search -> listener?.onSearchOptionClicked()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -319,7 +318,6 @@ class TopicsFragment : Fragment() {
         fun onCreateTopicButtonClicked()
         fun onSwipeRefreshLayoutClicked()
         fun onLogIn_OutOptionClicked()
-        fun onSearchOptionClicked()
         fun onLogOutClicked()
         fun onAvatarSelected(username: String)
         fun onQueryTextSubmit(query: String)

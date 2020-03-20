@@ -10,12 +10,4 @@
         >
     </item>
 
-    <item
-        android:id="@+id/action_search"
-        android:title="@string/title_send"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="always"
-        >
-    </item>
-
 </menu>

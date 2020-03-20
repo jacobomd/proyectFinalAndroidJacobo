@@ -92,10 +92,6 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
         ).commit()
     }
 
-    override fun onSearchOptionClicked() {
-        topicViewModel.onSearchOptionClicked()
-    }
-
     override fun onQueryTextSubmit(query: String) {
         topicViewModel.onSearchViewQueryText(key = query, context = this )
     }
