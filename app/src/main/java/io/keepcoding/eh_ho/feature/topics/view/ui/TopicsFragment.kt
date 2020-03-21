@@ -269,6 +269,10 @@ class TopicsFragment : Fragment() {
         }
     }
 
+    fun handleConnectionError() {
+        Snackbar.make(parentLayout, R.string.error_network, Snackbar.LENGTH_LONG).show()
+    }
+
 
     fun handleRequestError(requestError: RequestError) {
 

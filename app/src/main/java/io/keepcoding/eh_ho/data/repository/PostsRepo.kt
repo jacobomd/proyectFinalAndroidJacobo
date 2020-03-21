@@ -1,6 +1,8 @@
 package io.keepcoding.eh_ho.data.repository
 
 import android.content.Context
+import android.os.Handler
+import androidx.room.Room
 import com.android.volley.NetworkError
 import com.android.volley.Request
 import com.android.volley.ServerError
@@ -9,9 +11,12 @@ import io.keepcoding.eh_ho.data.service.ApiRequestQueue
 import io.keepcoding.eh_ho.data.service.ApiRoutes
 import io.keepcoding.eh_ho.data.service.RequestError
 import io.keepcoding.eh_ho.data.service.UserRequest
+import io.keepcoding.eh_ho.database.PostersEntity
+import io.keepcoding.eh_ho.database.TopicDatabase
 import io.keepcoding.eh_ho.domain.CreatePostModel
 import io.keepcoding.eh_ho.domain.Post
 import org.json.JSONObject
+import kotlin.concurrent.thread
 
 object PostsRepo {
 
@@ -21,7 +26,8 @@ object PostsRepo {
         onSuccess: (List<Post>) -> Unit,
         onError: (RequestError) -> Unit
     ) {
-        val username = UserRepo.getUsername(context)
+        val db: TopicDatabase = Room.databaseBuilder(context, TopicDatabase::class.java, "topic-database")
+            .build()
         val request = UserRequest(
             Request.Method.GET,
             ApiRoutes.getPosts(idTopic),
@@ -36,12 +42,58 @@ object PostsRepo {
             },
             {
                 it.printStackTrace()
+                if (it is NetworkError) {
+                val handler = Handler(context.mainLooper)
+                thread {
+                    val postersList = db.topicDao().getPostsByTopic(idTopic.toString())
+                    val runnable = Runnable {
+                        if (postersList.isNotEmpty()) {
+                            onSuccess(postersList.toModelPosters())
+                        } else {
+                            onError.invoke(RequestError(messageId = R.string.error_network))
+                        }
+                    }
+                    handler.post(runnable)
+                }
+                }
+                else
+                    onError.invoke(RequestError(it))
+            })
+
+        ApiRequestQueue.getRequesteQueue(context)
+            .add(request)
+    }
+
+    fun getAllPosts(
+        context: Context,
+        onSuccess: (List<Post>) -> Unit,
+        onError: (RequestError) -> Unit
+    ) {
+        val db: TopicDatabase = Room.databaseBuilder(context, TopicDatabase::class.java, "topic-database")
+            .build()
+        val request = UserRequest(
+            Request.Method.GET,
+            ApiRoutes.getAllPosts(),
+            null,
+            {
+                it?.let {
+                    onSuccess.invoke(Post.parseAllPosts(it))
+                    thread {
+                        db.topicDao()
+                            .insertAllPosters(postersList = Post.parseAllPosts(it).toEntityPoster())
+                    }
+                }
+                if (it == null) {
+                    onError.invoke(RequestError(messageId = R.string.error_network))
+                }
+            },
+            {
+                it.printStackTrace()
                 if (it is NetworkError)
                     onError.invoke(RequestError(messageId = R.string.error_network))
                 else
                     onError.invoke(RequestError(it))
             })
-
         ApiRequestQueue.getRequesteQueue(context)
             .add(request)
     }
@@ -104,3 +156,24 @@ object PostsRepo {
             .add(request)
     }
 }
+
+private fun List<PostersEntity>.toModelPosters(): List<Post> = map { it.toModel() }
+
+private fun PostersEntity.toModel(): Post = Post(
+    id = id,
+    username = username,
+    cooked = cooked,
+    createdAt = createdAt,
+    topic_id = posters_topic_id
+)
+
+
+private fun List<Post>.toEntityPoster(): List<PostersEntity> = map { it.toEntity() }
+
+private fun Post.toEntity(): PostersEntity = PostersEntity(
+    id = id,
+    username = username,
+    cooked = cooked,
+    createdAt = createdAt,
+    posters_topic_id = topic_id.toString()
+)

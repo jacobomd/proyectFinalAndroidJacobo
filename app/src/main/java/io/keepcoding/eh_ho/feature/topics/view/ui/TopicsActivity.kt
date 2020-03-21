@@ -69,7 +69,7 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
     }
 
     override fun onCreateTopicButtonClicked() {
-        topicViewModel.onCreateTopicButtonClicked()
+        topicViewModel.onCreateTopicButtonClicked(context = this)
     }
 
     override fun onCreateTopicOptionClicked(model: CreateTopicModel) {
@@ -111,6 +111,7 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
                 is TopicManagementState.LoadTopicList -> loadTopicList(list = state.topicList, user = state.userByTopic)
                 is TopicManagementState.DetailUserList -> loadDetailUser(detail = state.detail)
                 is TopicManagementState.RequestErrorReported -> showRequestError(error = state.requestError)
+                is TopicManagementState.ErrorConnection -> showErrorConnection()
                 is TopicManagementState.NavigateToLoginIn -> navigateToLoginIn()
                 is TopicManagementState.NavigateToCreateTopic -> navigateToCreateTopic()
                 is TopicManagementState.NavigateToPostsOfTopic -> navigateToPostsOfTopic(topic = state.topic)
@@ -124,6 +125,12 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
                 }
             }
         })
+    }
+
+    private fun showErrorConnection() {
+        getTopicsFragmentIfAvailableOrNull()?.run {
+            handleConnectionError()
+        }
     }
 
 

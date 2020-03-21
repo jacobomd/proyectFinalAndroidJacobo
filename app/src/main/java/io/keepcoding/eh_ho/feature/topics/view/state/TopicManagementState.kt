@@ -16,6 +16,7 @@ sealed class TopicManagementState {
     class NavigateToPostsOfTopic(val topic: Topic) : TopicManagementState()
     object CreateTopicLoading : TopicManagementState()
     object CreateTopicCompleted : TopicManagementState()
+    object ErrorConnection : TopicManagementState()
     class TopicCreatedSuccessfully(val msg: String) : TopicManagementState()
     class TopicNotCreated(val createError: String) : TopicManagementState()
     class CreateTopicFormErrorReported(val errorMsg: String) : TopicManagementState()

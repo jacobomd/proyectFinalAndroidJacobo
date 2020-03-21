@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_posts.parentLayout
 import kotlinx.android.synthetic.main.fragment_posts.viewRetry
 import kotlinx.android.synthetic.main.view_retry.*
 
+const val POSTS_FRAGMENT_TAG = "POSTS_FRAGMENT"
 
 class PostsFragment : Fragment() {
     var listener: PostsInteractionListener? = null
@@ -80,13 +81,18 @@ class PostsFragment : Fragment() {
 
         if (item?.itemId == R.id.button_create_post && UserRepo.isLogged(requireContext())) {
             listener?.onGoToCreatePost()
-        } else {
+        }
+        else {
             if (item?.itemId == R.id.button_create_post) {
                 showAlertPermission()
             }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    fun showConnectionError() {
+        Snackbar.make(parentLayout, R.string.error_network, Snackbar.LENGTH_LONG).show()
     }
 
     private fun showAlertPermission() {

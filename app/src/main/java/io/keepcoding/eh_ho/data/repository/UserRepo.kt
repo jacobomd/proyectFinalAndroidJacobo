@@ -2,6 +2,8 @@ package io.keepcoding.eh_ho.data.repository
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.Log
 import com.android.volley.NetworkError
 import com.android.volley.Request
@@ -168,6 +170,13 @@ object UserRepo {
         pref.edit()
             .remove(PREFERENCES_SESSION_USERNAME)
             .apply()
+    }
+
+    fun checkInternet(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        return isConnected
     }
 
     private fun saveSession(context: Context, userName: String) {

@@ -3,7 +3,9 @@ package io.keepcoding.eh_ho.feature.posts.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import io.keepcoding.eh_ho.R
+import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.feature.topics.view.ui.TopicsActivity
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_topic.*
@@ -37,7 +39,7 @@ class PostsActivity : AppCompatActivity(),
         if (topicId !=null ) {
            if (savedInstanceState == null){
                supportFragmentManager.beginTransaction()
-                   .add(R.id.fragmentContainer, postsFragment)
+                   .add(R.id.fragmentContainer, postsFragment, POSTS_FRAGMENT_TAG)
                    .commit()
            }
 
@@ -49,18 +51,24 @@ class PostsActivity : AppCompatActivity(),
 
     override fun onGoToCreatePost() {
 
-        val args = Bundle()
-        args.putString(EXTRA_TOPIC_TITLE, topicTitle)
-        args.putString(EXTRA_TOPIC_ID, topicId)
+        if (UserRepo.checkInternet(context = this)) {
+            val args = Bundle()
+            args.putString(EXTRA_TOPIC_TITLE, topicTitle)
+            args.putString(EXTRA_TOPIC_ID, topicId)
 
 
-        val createPostFragment = CreatePostFragment()
-        createPostFragment.arguments = args
+            val createPostFragment = CreatePostFragment()
+            createPostFragment.arguments = args
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, createPostFragment)
-            .addToBackStack(TRANSACTION_CREATE_POST)
-            .commit()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, createPostFragment)
+                .addToBackStack(TRANSACTION_CREATE_POST)
+                .commit()
+        } else {
+            getPostsFragmentIfAvailableOrNull()?.run {
+                showConnectionError()
+            }
+        }
     }
 
     override fun onPostCreated() {
@@ -72,5 +80,16 @@ class PostsActivity : AppCompatActivity(),
         val intent = Intent(this, TopicsActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun getPostsFragmentIfAvailableOrNull(): PostsFragment? {
+        val fragment: Fragment? =
+            supportFragmentManager.findFragmentByTag(POSTS_FRAGMENT_TAG)
+
+        return if (fragment != null && fragment.isVisible) {
+            fragment as PostsFragment
+        } else {
+            null
+        }
     }
 }

@@ -155,9 +155,11 @@ private fun List<TopicEntity>.toModelTopic(): List<Topic> = map { it.toModel() }
 private fun TopicEntity.toModel(): Topic = Topic(
     id = topicId,
     title = title,
+    date = date,
     posts = posts,
     views = views,
-    posters = mutableListOf()
+    posters = mutableListOf(),
+    last_posted_at = last_posted_at
 )
 
 private fun List<UserEntity>.toModelUser(): List<User> = map { it.toModel() }
@@ -175,9 +177,10 @@ private fun List<Topic>.toEntityTopic(): List<TopicEntity> = map { it.toEntity()
 private fun Topic.toEntity(): TopicEntity = TopicEntity(
     topicId = id,
     title = title,
-    date = date.toString(),
+    date = date,
     posts = posts,
-    views = views
+    views = views,
+    last_posted_at = last_posted_at
 )
 
 private fun List<User>.toEntityUser(): List<UserEntity> = map { it.toEntity() }

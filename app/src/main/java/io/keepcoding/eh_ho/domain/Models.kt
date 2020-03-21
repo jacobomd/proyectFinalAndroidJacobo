@@ -13,7 +13,8 @@ data class Topic(
     @SerializedName("created_at") val date: Date = Date(),
     @SerializedName("posts_count") val posts: Int = 0,
     @SerializedName("views") val views: Int = 0,
-    @SerializedName("posters") val posters: List<Poster>
+    @SerializedName("posters") val posters: List<Poster>,
+    @SerializedName("last_posted_at") val last_posted_at: Date = Date()
 ) {
 
     companion object {
@@ -42,7 +43,8 @@ data class Topic(
                     dateFormatted(jsonTopics.getJSONObject(i)),
                     jsonTopics.getJSONObject(i).getInt("posts_count"),
                     jsonTopics.getJSONObject(i).getInt("views"),
-                    posters
+                    posters,
+                    dateFormattedPosted(jsonTopics.getJSONObject(i))
                 )
 
                 topics.add(parsedTopic)
@@ -54,6 +56,16 @@ data class Topic(
         private fun dateFormatted(jsonObject: JSONObject) : Date {
 
              val date = jsonObject.getString("created_at")
+                .replace("Z", "+0000")
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+            val dateFormatted = dateFormat.parse(date) ?: Date()
+            return dateFormatted
+        }
+
+        private fun dateFormattedPosted(jsonObject: JSONObject) : Date {
+
+            val date = jsonObject.getString("last_posted_at")
                 .replace("Z", "+0000")
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
@@ -203,7 +215,8 @@ data class Post(
     val id: String = UUID.randomUUID().toString(),
     val username: String,
     val cooked: String,
-    val createdAt: String
+    val createdAt: String,
+    val topic_id: String
 
 ) {
     companion object {
@@ -212,6 +225,21 @@ data class Post(
         fun parsePosts(response: JSONObject): List<Post> {
             val jsonPosts = response.getJSONObject("post_stream")
                 .getJSONArray("posts")
+
+            val posts = mutableListOf<Post>()
+
+
+            for (i in 0 until jsonPosts.length()) {
+                val parsedPost =
+                    parsePost(jsonPosts.getJSONObject(i))
+                posts.add(parsedPost)
+            }
+
+            return posts
+        }
+
+        fun parseAllPosts(response: JSONObject): List<Post> {
+            val jsonPosts = response.getJSONArray("latest_posts")
 
             val posts = mutableListOf<Post>()
 
@@ -239,8 +267,8 @@ data class Post(
                 jsonObject.getInt("id").toString(),
                 jsonObject.getString("username"),
                 content,
-                dateFormatted
-
+                dateFormatted,
+                jsonObject.getString("topic_id")
             )
         }
 

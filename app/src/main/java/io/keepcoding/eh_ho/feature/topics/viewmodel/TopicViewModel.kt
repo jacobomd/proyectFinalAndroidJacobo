@@ -1,11 +1,17 @@
 package io.keepcoding.eh_ho.feature.topics.viewmodel
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
 import io.keepcoding.eh_ho.R
+import io.keepcoding.eh_ho.data.repository.PostsRepo
 import io.keepcoding.eh_ho.data.repository.TopicsRepo
+import io.keepcoding.eh_ho.data.repository.UserRepo
+import io.keepcoding.eh_ho.database.TopicDatabase
 import io.keepcoding.eh_ho.domain.CreateTopicModel
 import io.keepcoding.eh_ho.domain.Topic
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
@@ -34,6 +40,16 @@ class TopicViewModel : ViewModel() {
                 _topicManagementState.value =
                     TopicManagementState.RequestErrorReported(requestError = error)
             })
+
+        PostsRepo.getAllPosts(
+            context,
+            {
+
+            },
+            {
+
+            }
+        )
     }
 
     fun onTopicsFragmentResumed(context: Context?) {
@@ -61,9 +77,13 @@ class TopicViewModel : ViewModel() {
     }
 
 
-    fun onCreateTopicButtonClicked() {
-        _topicManagementState.value = TopicManagementState.NavigateToCreateTopic
-        println("create topic seleccionadooo")
+    fun onCreateTopicButtonClicked(context: Context) {
+        if (UserRepo.checkInternet(context)) {
+            _topicManagementState.value = TopicManagementState.NavigateToCreateTopic
+        }
+        else {
+            _topicManagementState.value = TopicManagementState.ErrorConnection
+        }
     }
 
     fun onLogIn_OutOptionClicked () {
