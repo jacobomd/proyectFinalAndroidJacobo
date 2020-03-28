@@ -114,6 +114,7 @@ object PostsRepo {
             {
                 it?.let {
                     onSuccess.invoke(model)
+
                 }
 
                 if (it == null)

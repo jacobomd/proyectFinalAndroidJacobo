@@ -29,12 +29,19 @@ class TopicViewModel : ViewModel() {
         }
 
     fun onViewCreatedWithNoSavedData(context: Context) {
+
+
+
         _topicManagementState.value = TopicManagementState.Loading
         TopicsRepo.getTopics(
             context,
             { topics, users->
                 _topicManagementState.value =
                     TopicManagementState.LoadTopicList(topicList = topics, userByTopic = users)
+
+                if (!UserRepo.checkInternet(context = context)) {
+                    _topicManagementState.value = TopicManagementState.ErrorConnectionModeOffline
+                }
             },
             { error ->
                 _topicManagementState.value =
@@ -50,19 +57,20 @@ class TopicViewModel : ViewModel() {
 
             }
         )
+
     }
 
-    fun onTopicsFragmentResumed(context: Context?) {
+    fun onTopicsFragmentResumed(context: Context) {
         _topicManagementState.value = TopicManagementState.Loading
         fetchTopicsAndHandleResponse(context = context)
     }
 
-    fun onRetryButtonClicked(context: Context?) {
+    fun onRetryButtonClicked(context: Context) {
         _topicManagementState.value = TopicManagementState.Loading
         fetchTopicsAndHandleResponse(context = context)
     }
 
-    fun onSwipeRefreshLayoutClicked(context: Context?) {
+    fun onSwipeRefreshLayoutClicked(context: Context) {
         _topicManagementState.value = TopicManagementState.Loading
         fetchTopicsAndHandleResponse(context = context)
     }
@@ -104,18 +112,25 @@ class TopicViewModel : ViewModel() {
         }
     }
 
-    private fun fetchTopicsAndHandleResponse(context: Context?) {
+    private fun fetchTopicsAndHandleResponse(context: Context) {
+
         context?.let {
             TopicsRepo.getTopics(it,
                 { topics, users ->
                     _topicManagementState.value =
                         TopicManagementState.LoadTopicList(topicList = topics, userByTopic = users)
+
+                    if (!UserRepo.checkInternet(context = context)) {
+                        _topicManagementState.value = TopicManagementState.ErrorConnectionModeOffline
+                    }
                 },
                 { error ->
                     _topicManagementState.value =
                         TopicManagementState.RequestErrorReported(requestError = error)
                 })
         }
+
+
     }
 
     fun onCreateTopicOptionClicked(context: Context, createTopicModel: CreateTopicModel) {

@@ -112,6 +112,7 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
                 is TopicManagementState.DetailUserList -> loadDetailUser(detail = state.detail)
                 is TopicManagementState.RequestErrorReported -> showRequestError(error = state.requestError)
                 is TopicManagementState.ErrorConnection -> showErrorConnection()
+                is TopicManagementState.ErrorConnectionModeOffline -> showErrorConnectionModeOffline()
                 is TopicManagementState.NavigateToLoginIn -> navigateToLoginIn()
                 is TopicManagementState.NavigateToCreateTopic -> navigateToCreateTopic()
                 is TopicManagementState.NavigateToPostsOfTopic -> navigateToPostsOfTopic(topic = state.topic)
@@ -126,6 +127,13 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
             }
         })
     }
+
+    private fun showErrorConnectionModeOffline() {
+        getTopicsFragmentIfAvailableOrNull()?.run {
+            handleErrorConnectionModeOffline()
+        }
+    }
+
 
     private fun showErrorConnection() {
         getTopicsFragmentIfAvailableOrNull()?.run {

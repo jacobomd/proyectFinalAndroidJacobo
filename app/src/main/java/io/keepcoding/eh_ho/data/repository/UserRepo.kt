@@ -106,7 +106,7 @@ object UserRepo {
     fun resetPassword(
         context: Context,
         model: ResetPasswordModel,
-        onSuccess: (ResetPasswordModel) -> Unit,
+        onSuccess: (ResetPasswordModel, userFound: Boolean) -> Unit,
         onError: (RequestError) -> Unit
     ) {
         val request = UserRequest(
@@ -116,7 +116,8 @@ object UserRepo {
             model.toJson(),
             {
                 it?.let {
-                    onSuccess.invoke(model)
+                    val userFound = it.getBoolean("user_found")
+                    onSuccess.invoke(model, userFound)
                 }
 
                 if (it == null)

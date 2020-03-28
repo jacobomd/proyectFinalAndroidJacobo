@@ -273,6 +273,10 @@ class TopicsFragment : Fragment() {
         Snackbar.make(parentLayout, R.string.error_network, Snackbar.LENGTH_LONG).show()
     }
 
+    fun handleErrorConnectionModeOffline() {
+        Snackbar.make(parentLayout, R.string.error_network_mode_offline, Snackbar.LENGTH_INDEFINITE).show()
+    }
+
 
     fun handleRequestError(requestError: RequestError) {
 

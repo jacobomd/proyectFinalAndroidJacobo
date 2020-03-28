@@ -32,6 +32,7 @@
     <string name="title_log_out">Log out</string>
     <string name="error_not_registered">User not registered</string>
     <string name="error_network">No internet connection, check it and try again</string>
+    <string name="error_network_mode_offline">Attention!, it has no internet connection, therefore it will enter offline mode</string>
     <string name="error_request_default">We\'re sorry, something bad happened, try again later</string>
     <string name="error_invalid_response">Invalid response from server</string>
     <string name="label_default_error">Oops something bad happened</string>

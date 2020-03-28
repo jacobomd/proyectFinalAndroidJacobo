@@ -96,10 +96,12 @@ class LoginActivity : AppCompatActivity(),
         UserRepo.resetPassword(
             this,
             model,
-            {
+            { model, userFound ->
                 enableLoading(enable = false)
-                if (it != null) {
-                    showAlertEmailSent(it.login)
+                if (model != null && userFound) {
+                    showAlertEmailSent(model.login)
+                } else if (!userFound) {
+                    showAlertEmailNotLoginCorrect()
                 }
 
             },
@@ -108,6 +110,14 @@ class LoginActivity : AppCompatActivity(),
                 handleRequestError(it)
             }
         )
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, TopicsActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showAlertEmailSent(login: String) {
@@ -121,7 +131,20 @@ class LoginActivity : AppCompatActivity(),
                 launchTopicsActivity()
                 dialog.dismiss()}
             show()
-        }    }
+        }
+    }
+
+    private fun showAlertEmailNotLoginCorrect() {
+        val builder = AlertDialog.Builder(this)
+
+        with(builder)
+        {
+            setMessage("Incorrect username or email")
+            setPositiveButton("OK") { dialog, i ->
+                dialog.dismiss()}
+            show()
+        }
+    }
 
     private fun handleRequestError(requestError: RequestError) {
         val message = if (requestError.messageId != null)

@@ -72,27 +72,29 @@ class TopicsAdapter (
                         labelViews.text = field?.views.toString()
                         setTimeOffset(it.getTimeOffset())
 
-                    }
+                        for (poster in topic?.posters!!.listIterator()) {
+                            if (poster.description.startsWith("Original Poster")) {
+                                val userId = poster.user_id
 
-                    for (poster in topic?.posters!!.listIterator()) {
-                        if (poster.description.startsWith("Original Poster")) {
-                            val userId = poster.user_id
-
-                            for (user in users.listIterator()) {
-                                if (userId.toString() == user.id) {
-                                    val avatar = user.avatar_template
-                                    val avatarFinal = avatar.replace("{size}", "150")
-                                    val image = "https://mdiscourse.keepcoding.io/${avatarFinal}"
-                                    loadImage(image, imagButtAvatar)
-                                    imagButtAvatar.setOnClickListener {
-                                        println("avarar pulsadoooooooo de username: ${user.username}")
-                                        avatarClickListenter(user.username)
+                                for (user in users) {
+                                    if (userId.toString() == user.id) {
+                                        val avatar = user.avatar_template
+                                        val avatarFinal = avatar.replace("{size}", "150")
+                                        val image = "https://mdiscourse.keepcoding.io/${avatarFinal}"
+                                        loadImage(image, imagButtAvatar)
+                                        imagButtAvatar.setOnClickListener {
+                                            println("avarar pulsadoooooooo de username: ${user.username}")
+                                            avatarClickListenter(user.username)
+                                        }
                                     }
                                 }
-                            }
 
+                            }
                         }
+
                     }
+
+
                 }
 
 

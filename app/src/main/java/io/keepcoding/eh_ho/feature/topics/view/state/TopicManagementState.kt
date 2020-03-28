@@ -17,6 +17,7 @@ sealed class TopicManagementState {
     object CreateTopicLoading : TopicManagementState()
     object CreateTopicCompleted : TopicManagementState()
     object ErrorConnection : TopicManagementState()
+    object ErrorConnectionModeOffline : TopicManagementState()
     class TopicCreatedSuccessfully(val msg: String) : TopicManagementState()
     class TopicNotCreated(val createError: String) : TopicManagementState()
     class CreateTopicFormErrorReported(val errorMsg: String) : TopicManagementState()
