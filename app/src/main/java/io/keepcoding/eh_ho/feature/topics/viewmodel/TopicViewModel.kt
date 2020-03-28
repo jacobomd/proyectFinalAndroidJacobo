@@ -35,9 +35,9 @@ class TopicViewModel : ViewModel() {
         _topicManagementState.value = TopicManagementState.Loading
         TopicsRepo.getTopics(
             context,
-            { topics, users->
+            { topics->
                 _topicManagementState.value =
-                    TopicManagementState.LoadTopicList(topicList = topics, userByTopic = users)
+                    TopicManagementState.LoadTopicList(topicList = topics)
 
                 if (!UserRepo.checkInternet(context = context)) {
                     _topicManagementState.value = TopicManagementState.ErrorConnectionModeOffline
@@ -116,9 +116,9 @@ class TopicViewModel : ViewModel() {
 
         context?.let {
             TopicsRepo.getTopics(it,
-                { topics, users ->
+                { topics->
                     _topicManagementState.value =
-                        TopicManagementState.LoadTopicList(topicList = topics, userByTopic = users)
+                        TopicManagementState.LoadTopicList(topicList = topics)
 
                     if (!UserRepo.checkInternet(context = context)) {
                         _topicManagementState.value = TopicManagementState.ErrorConnectionModeOffline
@@ -181,9 +181,9 @@ class TopicViewModel : ViewModel() {
     fun onSearchViewQueryText(context: Context, key: String?) {
         TopicsRepo.getTopics(
             context,
-            { topicList, userList ->
+            { topicList ->
                 _topicManagementState.value =
-                    TopicManagementState.LoadTopicList(topicList = topicList.filterByKey(key), userByTopic = userList)
+                    TopicManagementState.LoadTopicList(topicList = topicList.filterByKey(key))
             },
             { error ->
                 _topicManagementState.value =

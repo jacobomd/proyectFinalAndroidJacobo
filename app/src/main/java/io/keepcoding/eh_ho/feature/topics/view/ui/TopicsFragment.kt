@@ -152,9 +152,9 @@ class TopicsFragment : Fragment() {
     }
 
 
-    fun loadTopicList(topicList: List<Topic>, userByTopic: List<User>) {
+    fun loadTopicList(topicList: List<Topic>) {
         enableLoading(false)
-        topicsAdapter.setTopics(topics = topicList, users = userByTopic)
+        topicsAdapter.setTopics(topics = topicList)
         swipeRefreshLayout.isRefreshing = false
     }
 

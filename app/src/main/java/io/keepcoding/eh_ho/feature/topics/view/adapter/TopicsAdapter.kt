@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.makeramen.roundedimageview.RoundedTransformationBuilder
 import com.squareup.picasso.Picasso
 import io.keepcoding.eh_ho.R
+import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.domain.Topic
 import io.keepcoding.eh_ho.domain.User
 import kotlinx.android.synthetic.main.item_topic.view.*
@@ -43,22 +44,17 @@ class TopicsAdapter (
     override fun onBindViewHolder(holder: TopicHolder, position: Int) {
         val topic = topics[position]
         holder.topic = topic
-        holder.getUsers(this.users)
         holder.itemView.setOnClickListener(listener)
 
     }
 
-    fun setTopics (topics: List<Topic>, users: List<User>) {
+    fun setTopics (topics: List<Topic>) {
         this.topics.clear()
         this.topics.addAll(topics)
-        this.users.clear()
-        this.users.addAll(users)
         notifyDataSetChanged()
     }
 
     inner class TopicHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var users = mutableListOf<User>()
 
         var topic : Topic? = null
             set(value) {
@@ -71,50 +67,38 @@ class TopicsAdapter (
                         labelPosts.text = field?.posts.toString()
                         labelViews.text = field?.views.toString()
                         setTimeOffset(it.getTimeOffset())
+                        loadImage(field!!.avatar_template, imagButtAvatar)
 
-                        for (poster in topic?.posters!!.listIterator()) {
-                            if (poster.description.startsWith("Original Poster")) {
-                                val userId = poster.user_id
-
-                                for (user in users) {
-                                    if (userId.toString() == user.id) {
-                                        val avatar = user.avatar_template
-                                        val avatarFinal = avatar.replace("{size}", "150")
-                                        val image = "https://mdiscourse.keepcoding.io/${avatarFinal}"
-                                        loadImage(image, imagButtAvatar)
-                                        imagButtAvatar.setOnClickListener {
-                                            println("avarar pulsadoooooooo de username: ${user.username}")
-                                            avatarClickListenter(user.username)
-                                        }
-                                    }
-                                }
-
+                        if (UserRepo.checkInternet(itemView.context)) {
+                            imagButtAvatar.setOnClickListener {
+                                avatarClickListenter(field!!.username)
                             }
                         }
 
                     }
 
-
                 }
-
 
             }
 
-
         private fun loadImage (data : String, image: ImageView) {
 
-            val transformation = RoundedTransformationBuilder()
-                .borderColor(Color.BLACK)
-                .borderWidthDp(0F)
-                .cornerRadiusDp(40F)
-                .oval(false)
-                .build()
+            if (UserRepo.checkInternet(itemView.context)) {
+                val transformation = RoundedTransformationBuilder()
+                    .borderColor(Color.BLACK)
+                    .borderWidthDp(0F)
+                    .cornerRadiusDp(40F)
+                    .oval(false)
+                    .build()
 
-            Picasso.with(itemView.context)
-                .load(data)
-                .fit()
-                .transform(transformation)
-                .into(image)
+                Picasso.with(itemView.context)
+                    .load(data)
+                    .fit()
+                    .transform(transformation)
+                    .into(image)
+            } else {
+                image.setImageResource(R.drawable.imagen__2x)
+            }
         }
 
 
@@ -135,9 +119,6 @@ class TopicsAdapter (
 
         }
 
-        fun getUsers(users: MutableList<User>) {
-            this.users = users
-        }
 
     }
 

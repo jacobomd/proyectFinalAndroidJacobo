@@ -14,7 +14,9 @@ data class Topic(
     @SerializedName("posts_count") val posts: Int = 0,
     @SerializedName("views") val views: Int = 0,
     @SerializedName("posters") val posters: List<Poster>,
-    @SerializedName("last_posted_at") val last_posted_at: Date = Date()
+    @SerializedName("last_posted_at") val last_posted_at: Date = Date(),
+    val avatar_template: String,
+    val username: String
 ) {
 
     companion object {
@@ -23,7 +25,17 @@ data class Topic(
             val jsonTopics = response.getJSONObject("topic_list")
                 .getJSONArray("topics")
 
+            val jsonUsers = response.getJSONArray("users")
+            val users = mutableListOf<User>()
+
+            for (i in 0 until jsonUsers.length()) {
+                val parsedUser = parseUser(jsonUsers.getJSONObject(i))
+                users.add(parsedUser)
+            }
+
             val topics = mutableListOf<Topic>()
+            var image: String = ""
+            var username: String = ""
 
             for (i in 0 until jsonTopics.length()) {
 
@@ -37,6 +49,20 @@ data class Topic(
                     posters.add(parsedPost)
                 }
 
+                for (poster in posters) {
+                    if (poster.description.startsWith("Original Poster")) {
+                        val userId = poster.user_id
+                        for (user in users) {
+                            if (userId.toString() == user.id) {
+                                username = user.username
+                                val avatar = user.avatar_template
+                                val avatarFinal = avatar.replace("{size}", "150")
+                                image = "https://mdiscourse.keepcoding.io/${avatarFinal}"
+                            }
+                        }
+                    }
+                }
+
                 val parsedTopic = Topic(
                     jsonTopics.getJSONObject(i).getInt("id").toString(),
                     jsonTopics.getJSONObject(i).getString("title"),
@@ -44,13 +70,26 @@ data class Topic(
                     jsonTopics.getJSONObject(i).getInt("posts_count"),
                     jsonTopics.getJSONObject(i).getInt("views"),
                     posters,
-                    dateFormattedPosted(jsonTopics.getJSONObject(i))
+                    dateFormattedPosted(jsonTopics.getJSONObject(i)),
+                    image,
+                    username
                 )
 
                 topics.add(parsedTopic)
             }
 
             return topics
+        }
+
+        private fun parseUser(jsonObject: JSONObject): User {
+
+            return User(
+                jsonObject.getInt("id").toString(),
+                jsonObject.getString("username"),
+                jsonObject.getString("name"),
+                jsonObject.getString("avatar_template")
+
+            )
         }
 
         private fun dateFormatted(jsonObject: JSONObject) : Date {

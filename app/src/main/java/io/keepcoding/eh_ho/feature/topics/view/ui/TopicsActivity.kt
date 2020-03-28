@@ -108,7 +108,7 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
         topicViewModel.topicManagementState.observe(this, Observer { state ->
             when (state) {
                 TopicManagementState.Loading -> enableLoadingView()
-                is TopicManagementState.LoadTopicList -> loadTopicList(list = state.topicList, user = state.userByTopic)
+                is TopicManagementState.LoadTopicList -> loadTopicList(list = state.topicList)
                 is TopicManagementState.DetailUserList -> loadDetailUser(detail = state.detail)
                 is TopicManagementState.RequestErrorReported -> showRequestError(error = state.requestError)
                 is TopicManagementState.ErrorConnection -> showErrorConnection()
@@ -166,10 +166,10 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
         }
     }
 
-    private fun loadTopicList(list: List<Topic>, user: List<User>) {
+    private fun loadTopicList(list: List<Topic>) {
         getTopicsFragmentIfAvailableOrNull()?.run {
             enableLoading(enabled = false)
-            loadTopicList(topicList = list, userByTopic = user)
+            loadTopicList(topicList = list)
         }
     }
 

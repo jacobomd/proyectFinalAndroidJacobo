@@ -8,7 +8,7 @@ import io.keepcoding.eh_ho.domain.User
 
 sealed class TopicManagementState {
     object Loading : TopicManagementState()
-    class LoadTopicList(val topicList: List<Topic>, val userByTopic: List<User>) : TopicManagementState()
+    class LoadTopicList(val topicList: List<Topic>) : TopicManagementState()
     class DetailUserList(val detail: DetailUser) : TopicManagementState ()
     class RequestErrorReported(val requestError: RequestError) : TopicManagementState()
     object NavigateToLoginIn: TopicManagementState()

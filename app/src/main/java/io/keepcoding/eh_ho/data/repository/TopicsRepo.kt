@@ -26,7 +26,7 @@ object TopicsRepo {
 
     fun getTopics(
         context: Context,
-        onSuccess: (List<Topic>, List<User>) -> Unit,
+        onSuccess: (List<Topic>) -> Unit,
         onError: (RequestError) -> Unit
     ) {
         val db: TopicDatabase = Room.databaseBuilder(context, TopicDatabase::class.java, "topic-database")
@@ -37,7 +37,7 @@ object TopicsRepo {
             null,
             {
                 it?.let {
-                onSuccess.invoke(Topic.parseTopics(it), User.parseUsers(it))
+                onSuccess.invoke(Topic.parseTopics(it))
                    thread {
                         db.topicDao().insertAllTopics(topicList = Topic.parseTopics(it).toEntityTopic())
                         db.topicDao().insertAllUsers(userList = User.parseUsers(it).toEntityUser())
@@ -56,7 +56,7 @@ object TopicsRepo {
                         val userList = db.topicDao().getUsers()
                         val runnable = Runnable {
                             if (topicList.isNotEmpty()) {
-                                onSuccess(topicList.toModelTopic(), userList.toModelUser())
+                                onSuccess(topicList.toModelTopic())
                             } else {
                                 onError.invoke(RequestError(messageId = R.string.error_network))
                             }
@@ -159,7 +159,9 @@ private fun TopicEntity.toModel(): Topic = Topic(
     posts = posts,
     views = views,
     posters = mutableListOf(),
-    last_posted_at = last_posted_at
+    last_posted_at = last_posted_at,
+    avatar_template = "",
+    username = ""
 )
 
 private fun List<UserEntity>.toModelUser(): List<User> = map { it.toModel() }
