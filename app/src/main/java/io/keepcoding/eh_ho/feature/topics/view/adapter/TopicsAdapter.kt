@@ -11,22 +11,20 @@ import com.squareup.picasso.Picasso
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.domain.Topic
-import io.keepcoding.eh_ho.domain.User
 import kotlinx.android.synthetic.main.item_topic.view.*
 import java.util.*
 
 
 class TopicsAdapter (
     val topicClickListener: ((Topic) -> Unit),
-    val avatarClickListenter: ((String) -> Unit)
+    val avatarClickListener: ((String) -> Unit)
 ): RecyclerView.Adapter<TopicsAdapter.TopicHolder>() {
 
     private val topics = mutableListOf<Topic>()
-    private val users = mutableListOf<User>()
 
     private val listener : ((View) -> Unit) = {
         val topic = it.tag as Topic
-        topicClickListener?.invoke(topic)
+        topicClickListener.invoke(topic)
     }
 
 
@@ -69,11 +67,10 @@ class TopicsAdapter (
                         setTimeOffset(it.getTimeOffset())
                         loadImage(field!!.avatar_template, imagButtAvatar)
 
-                        if (UserRepo.checkInternet(itemView.context)) {
+
                             imagButtAvatar.setOnClickListener {
-                                avatarClickListenter(field!!.username)
+                                avatarClickListener(field!!.username)
                             }
-                        }
 
                     }
 

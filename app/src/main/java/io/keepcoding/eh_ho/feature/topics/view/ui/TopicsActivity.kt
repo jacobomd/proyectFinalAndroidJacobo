@@ -13,11 +13,10 @@ import io.keepcoding.eh_ho.data.service.RequestError
 import io.keepcoding.eh_ho.domain.CreateTopicModel
 import io.keepcoding.eh_ho.domain.DetailUser
 import io.keepcoding.eh_ho.domain.Topic
-import io.keepcoding.eh_ho.domain.User
 import io.keepcoding.eh_ho.feature.login.LoginActivity
-import io.keepcoding.eh_ho.feature.posts.view.EXTRA_TOPIC_ID
-import io.keepcoding.eh_ho.feature.posts.view.EXTRA_TOPIC_TITLE
-import io.keepcoding.eh_ho.feature.posts.view.PostsActivity
+import io.keepcoding.eh_ho.feature.posts.view.ui.EXTRA_TOPIC_ID
+import io.keepcoding.eh_ho.feature.posts.view.ui.EXTRA_TOPIC_TITLE
+import io.keepcoding.eh_ho.feature.posts.view.ui.PostsActivity
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
 import io.keepcoding.eh_ho.feature.topics.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.content_topic.*
@@ -79,8 +78,8 @@ TopicsFragment.TopicsInteractionListener, CreateTopicFragment.CreateTopicInterac
         topicViewModel.onSwipeRefreshLayoutClicked(context = this)
     }
 
-    override fun onLogIn_OutOptionClicked() {
-        topicViewModel.onLogIn_OutOptionClicked()
+    override fun onLogInOutOptionClicked() {
+        topicViewModel.onLogInOutOptionClicked()
     }
 
     override fun onLogOutClicked() {

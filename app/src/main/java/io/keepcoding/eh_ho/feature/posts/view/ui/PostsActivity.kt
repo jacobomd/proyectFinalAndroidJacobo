@@ -1,4 +1,4 @@
-package io.keepcoding.eh_ho.feature.posts.view
+package io.keepcoding.eh_ho.feature.posts.view.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.feature.topics.view.ui.TopicsActivity
-import kotlinx.android.synthetic.main.activity_posts.*
-import kotlinx.android.synthetic.main.content_topic.*
 import java.lang.IllegalArgumentException
 
 const val EXTRA_TOPIC_ID = "topic_id"
@@ -20,8 +18,8 @@ class PostsActivity : AppCompatActivity(),
     CreatePostFragment.CreatePostInteractionListener {
 
 
-    var topicTitle : String? = null
-    var topicId : String? = null
+    private var topicTitle : String? = null
+    private var topicId : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +37,9 @@ class PostsActivity : AppCompatActivity(),
         if (topicId !=null ) {
            if (savedInstanceState == null){
                supportFragmentManager.beginTransaction()
-                   .add(R.id.fragmentContainer, postsFragment, POSTS_FRAGMENT_TAG)
+                   .add(R.id.fragmentContainer, postsFragment,
+                       POSTS_FRAGMENT_TAG
+                   )
                    .commit()
            }
 

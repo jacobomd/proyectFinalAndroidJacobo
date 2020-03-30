@@ -106,7 +106,6 @@ object PostsRepo {
         onSuccess: (CreatePostModel) -> Unit,
         onError: (RequestError) -> Unit
     ) {
-        val username = UserRepo.getUsername(context)
         val request = UserRequest(
             Request.Method.POST,
             ApiRoutes.createPost(),
@@ -176,5 +175,5 @@ private fun Post.toEntity(): PostersEntity = PostersEntity(
     username = username,
     cooked = cooked,
     createdAt = createdAt,
-    posters_topic_id = topic_id.toString()
+    posters_topic_id = topic_id
 )

@@ -22,9 +22,9 @@ class LoginActivity : AppCompatActivity(),
     SignUpFragment.SignUpInteractionListener {
 
 
-    val signInFragment: SignInFragment =
+    private val signInFragment: SignInFragment =
         SignInFragment()
-    val signUpFragment: SignUpFragment =
+    private val signUpFragment: SignUpFragment =
         SignUpFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity(),
             model,
             { model, userFound ->
                 enableLoading(enable = false)
-                if (model != null && userFound) {
+                if (userFound) {
                     showAlertEmailSent(model.login)
                 } else if (!userFound) {
                     showAlertEmailNotLoginCorrect()
@@ -147,12 +147,11 @@ class LoginActivity : AppCompatActivity(),
     }
 
     private fun handleRequestError(requestError: RequestError) {
-        val message = if (requestError.messageId != null)
-            getString(requestError.messageId)
-        else if (requestError.message != null)
-            requestError.message
-        else
-            getString(R.string.error_request_default)
+        val message = when {
+            requestError.messageId != null -> getString(requestError.messageId)
+            requestError.message != null -> requestError.message
+            else -> getString(R.string.error_request_default)
+        }
 
         Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG).show()
 

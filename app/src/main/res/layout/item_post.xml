@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,7 +33,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:hint="Nombre autor"
+            android:hint="@string/nombre_autor"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/imageAutor"
             app:layout_constraintStart_toEndOf="@+id/imageAutor"
@@ -47,8 +47,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Content post"
-
+            android:hint="@string/content_post"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
@@ -70,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:hint="Created at"
+            android:hint="@string/created_at"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/imageDate"
             app:layout_constraintStart_toEndOf="@id/imageDate"

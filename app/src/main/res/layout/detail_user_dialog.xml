@@ -19,7 +19,8 @@
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avatar_3x" />
+        app:srcCompat="@drawable/avatar_3x"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -30,7 +31,8 @@
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/txrUserName"
@@ -38,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:text="UserName"
+        android:text="@string/username"
         android:textColor="@android:color/background_light"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
@@ -52,7 +54,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="8dp"
-        android:text="Name"
+        android:text="@string/name"
         android:textColor="@android:color/background_light"
         app:layout_constraintStart_toEndOf="@+id/imgAvatar"
         app:layout_constraintTop_toBottomOf="@+id/txrUserName" />
@@ -76,7 +78,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_person" />
+            app:srcCompat="@drawable/ic_person"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/txtTitleModer"
@@ -84,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:text="Moderator status :"
+            android:text="@string/moderator_status"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/imgPerson"
             app:layout_constraintStart_toEndOf="@+id/imgPerson"
@@ -96,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:text="No"
+            android:text="@string/no"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/txtTitleModer"
             app:layout_constraintStart_toEndOf="@+id/txtTitleModer"
@@ -111,7 +114,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgPerson"
-            app:srcCompat="@drawable/ic_views" />
+            app:srcCompat="@drawable/ic_views"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/txtTitleLas"
@@ -119,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:text="Last seen :"
+            android:text="@string/last_seen"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/imgEye"
             app:layout_constraintStart_toEndOf="@+id/imgEye"
@@ -131,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:text="Apr 19"
+            android:text="@string/apr_19"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/txtTitleLas"
             app:layout_constraintStart_toEndOf="@+id/txtTitleLas" />
@@ -145,7 +149,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgEye"
-            app:srcCompat="@drawable/ic_post" />
+            app:srcCompat="@drawable/ic_post"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/txtTitlePriv"
@@ -153,7 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:text="Private messages :"
+            android:text="@string/private_messages"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/imgPrivMessag"
             app:layout_constraintStart_toEndOf="@+id/imgPrivMessag"
@@ -165,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:text="0"
+            android:text="@string/_0"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/txtTitlePriv"
             app:layout_constraintStart_toEndOf="@+id/txtTitlePriv"

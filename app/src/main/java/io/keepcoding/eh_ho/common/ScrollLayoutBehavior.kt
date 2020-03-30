@@ -7,8 +7,6 @@ import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
-import io.keepcoding.eh_ho.data.repository.UserRepo
-
 
 class ScrollLayoutBehavior (context: Context, attributeSet: AttributeSet) : FloatingActionButton.Behavior() {
 

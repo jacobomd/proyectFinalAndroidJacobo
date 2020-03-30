@@ -1,4 +1,4 @@
-package io.keepcoding.eh_ho.feature.posts.view
+package io.keepcoding.eh_ho.feature.posts.view.ui
 
 
 import android.content.Context
@@ -21,9 +21,9 @@ import kotlinx.android.synthetic.main.fragment_create_post.parentLayout
 
 class CreatePostFragment : Fragment() {
 
-    var topicId: String? = null
-    var listener: CreatePostInteractionListener? = null
-    lateinit var loadingDialogFragment: LoadingDialogFragment
+    private var topicId: String? = null
+    private var listener: CreatePostInteractionListener? = null
+    private lateinit var loadingDialogFragment: LoadingDialogFragment
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -42,7 +42,6 @@ class CreatePostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val topicTitle = arguments?.getString(EXTRA_TOPIC_TITLE)
         (activity as AppCompatActivity).supportActionBar?.title = "Create post"
     }
 
@@ -89,30 +88,29 @@ class CreatePostFragment : Fragment() {
             editPost.text.toString(),
             topicId.toString().toInt()
         )
-        context?.let {
+        context?.let { context ->
             enableLoadingDialog(true)
             PostsRepo.createPost(
-                it,
+                context,
                 model,
                 {
                     enableLoadingDialog(false)
                     listener?.onPostCreated()
                 },
-                {
+                { error ->
                     enableLoadingDialog(false)
-                    handleError(it)
+                    handleError(error)
                 }
             )
         }
     }
 
     private fun handleError(requestError: RequestError) {
-        val message = if (requestError.messageId != null)
-            getString(requestError.messageId)
-        else if (requestError.message != null)
-            requestError.message
-        else
-            getString(R.string.error_request_default)
+        val message = when {
+            requestError.messageId != null -> getString(requestError.messageId)
+            requestError.message != null -> requestError.message
+            else -> getString(R.string.error_request_default)
+        }
 
         Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG).show()
     }

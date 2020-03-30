@@ -4,13 +4,9 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.util.Log
 import com.android.volley.NetworkError
 import com.android.volley.Request
 import com.android.volley.ServerError
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.service.*
 import io.keepcoding.eh_ho.domain.ResetPasswordModel
@@ -32,7 +28,7 @@ object UserRepo {
             Request.Method.GET,
             ApiRoutes.signIn(signModel.username),
             null,
-            {response ->
+            {
                 saveSession(context, signModel.username)
                 onSuccess.invoke(signModel)
             },
@@ -76,12 +72,12 @@ object UserRepo {
             { response ->
 
                 response?.let {
-                    if (it?.optBoolean("success")) {
+                    if (it.optBoolean("success")) {
                         saveSession(context, signUpModel.username)
                         onSuccess.invoke(signUpModel)
                     }
                     else
-                        onError.invoke(RequestError(message = it?.getString("message")))
+                        onError.invoke(RequestError(message = it.getString("message")))
                 }
 
                 if (response == null)

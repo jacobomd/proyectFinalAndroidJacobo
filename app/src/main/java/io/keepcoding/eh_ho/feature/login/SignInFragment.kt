@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 
 class SignInFragment: Fragment() {
 
-    var listener: SignInInteractionListener? = null
+    private var listener: SignInInteractionListener? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

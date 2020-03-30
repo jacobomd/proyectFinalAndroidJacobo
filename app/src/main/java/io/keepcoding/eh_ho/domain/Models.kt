@@ -34,8 +34,8 @@ data class Topic(
             }
 
             val topics = mutableListOf<Topic>()
-            var image: String = ""
-            var username: String = ""
+            var image = ""
+            var username = ""
 
             for (i in 0 until jsonTopics.length()) {
 
@@ -98,8 +98,7 @@ data class Topic(
                 .replace("Z", "+0000")
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-            val dateFormatted = dateFormat.parse(date) ?: Date()
-            return dateFormatted
+            return dateFormat.parse(date) ?: Date()
         }
 
         private fun dateFormattedPosted(jsonObject: JSONObject) : Date {
@@ -108,8 +107,7 @@ data class Topic(
                 .replace("Z", "+0000")
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-            val dateFormatted = dateFormat.parse(date) ?: Date()
-            return dateFormatted
+            return dateFormat.parse(date) ?: Date()
         }
 
         const val MINUTES_MILLIS = 1000L * 60
@@ -243,8 +241,7 @@ data class DetailUser(
             val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
             val targetFormat = SimpleDateFormat("MMM dd, yyyy")
             val dateResult = originalFormat.parse(date)
-            val formattedDate = targetFormat.format(dateResult)
-            return formattedDate
+            return targetFormat.format(dateResult)
         }
 
     }
@@ -312,12 +309,12 @@ data class Post(
         }
 
 
+        @SuppressLint("SimpleDateFormat")
         private fun convertDate(date: String): String {
             val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
             val targetFormat = SimpleDateFormat("MMM dd, yyyy")
             val dateResult = originalFormat.parse(date)
-            val formattedDate = targetFormat.format(dateResult)
-            return formattedDate
+            return targetFormat.format(dateResult)
         }
 
 

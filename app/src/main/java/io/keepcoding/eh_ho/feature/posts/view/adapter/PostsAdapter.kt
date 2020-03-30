@@ -1,4 +1,4 @@
-package io.keepcoding.eh_ho.feature.posts.view
+package io.keepcoding.eh_ho.feature.posts.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +12,6 @@ import kotlinx.android.synthetic.main.item_post.view.*
 class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
 
     private val posts = mutableListOf<Post>()
-    /*private val listener : ((View) -> Unit) = {
-        val post = it.tag as Topic
-    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
 
@@ -30,7 +27,6 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
         val post = posts[position]
         holder.post= post
-        //holder.itemView.setOnClickListener (listener)
     }
 
     fun setPosts (posts: List<Post>) {

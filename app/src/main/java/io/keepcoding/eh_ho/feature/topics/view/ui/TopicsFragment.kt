@@ -1,5 +1,6 @@
 package io.keepcoding.eh_ho.feature.topics.view.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -7,12 +8,10 @@ import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.makeramen.roundedimageview.RoundedTransformationBuilder
 import com.squareup.picasso.Picasso
@@ -21,7 +20,6 @@ import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
 import io.keepcoding.eh_ho.domain.DetailUser
 import io.keepcoding.eh_ho.domain.Topic
-import io.keepcoding.eh_ho.domain.User
 import io.keepcoding.eh_ho.feature.topics.view.adapter.TopicsAdapter
 import kotlinx.android.synthetic.main.detail_user_dialog.*
 import kotlinx.android.synthetic.main.fragment_topics.*
@@ -52,7 +50,7 @@ class TopicsFragment : Fragment() {
         setHasOptionsMenu(true)
         topicsAdapter = TopicsAdapter(topicClickListener = {
             topicItemClicked(it)
-        }, avatarClickListenter = {
+        }, avatarClickListener = {
             avatarItemClicked(it)
         })
 
@@ -147,8 +145,8 @@ class TopicsFragment : Fragment() {
     }
 
     fun showDialogAlert(detailUser: DetailUser) {
-        alertDialogDetailUser(username = detailUser.username, name = detailUser.name, moderator = detailUser.moderator,
-            lastSeen = detailUser.last_seen_at, privateMessag = "0", avatar= detailUser.avatar_template)
+        this.alertDialogDetailUser(username = detailUser.username, name = detailUser.name, moderator = detailUser.moderator,
+            lastSeen = detailUser.last_seen_at, avatar= detailUser.avatar_template)
     }
 
 
@@ -162,7 +160,7 @@ class TopicsFragment : Fragment() {
         if (UserRepo.isLogged(requireContext())) {
             showAlertLogOut()
         } else {
-            listener?.onLogIn_OutOptionClicked()
+            listener?.onLogInOutOptionClicked()
         }
     }
 
@@ -191,7 +189,7 @@ class TopicsFragment : Fragment() {
         builder.setMessage("Please log in to perform this action ...")
 
         // Set a positive button and its click listener on alert dialog
-        builder.setPositiveButton("Ok") { dialog, witch ->
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
 
@@ -212,7 +210,7 @@ class TopicsFragment : Fragment() {
         builder.setMessage("Do you want to leave the session?")
 
         // Set a positive button and its click listener on alert dialog
-        builder.setPositiveButton("Ok") { dialog, witch ->
+        builder.setPositiveButton("Ok") { dialog, _ ->
             listener?.onLogOutClicked()
             dialog.dismiss()
         }
@@ -224,13 +222,8 @@ class TopicsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun alertDialogDetailUser (username: String,
-                                       name: String,
-                                       moderator: String,
-                                       lastSeen: String,
-                                       privateMessag: String,
-                                       avatar: String
-                                       )
+    @SuppressLint("InflateParams")
+    private fun alertDialogDetailUser (username: String, name: String, moderator: String, lastSeen: String, avatar: String)
     {
 
         //Inflate the dialog with custom view
@@ -241,16 +234,15 @@ class TopicsFragment : Fragment() {
         //show dialog
         val mAlertDialog = mBuilder.show()
 
-        val avatarImag = avatar
-        val avatarFinal = avatarImag.replace("{size}", "150")
+        val avatarFinal = avatar.replace("{size}", "150")
         val image = "https://mdiscourse.keepcoding.io/${avatarFinal}"
         loadImage(image, mAlertDialog.imgAvatar)
 
         mAlertDialog.txrUserName.text = username
         mAlertDialog.txtName.text = name
         mAlertDialog.txtModerator.text = moderator
-        mAlertDialog.txtLastseen.text = lastSeen.toString()
-        mAlertDialog.txtPrivateMessag.text = privateMessag
+        mAlertDialog.txtLastseen.text = lastSeen
+        mAlertDialog.txtPrivateMessag.text = "?"
 
     }
 
@@ -274,7 +266,7 @@ class TopicsFragment : Fragment() {
     }
 
     fun handleErrorConnectionModeOffline() {
-        Snackbar.make(parentLayout, R.string.error_network_mode_offline, Snackbar.LENGTH_INDEFINITE).show()
+        Snackbar.make(parentLayout, R.string.error_network_mode_offline, 5000).show()
     }
 
 
@@ -283,12 +275,11 @@ class TopicsFragment : Fragment() {
         listTopics.visibility = View.INVISIBLE
         viewRetry.visibility = View.VISIBLE
 
-        val message = if (requestError.messageId != null)
-            getString(requestError.messageId)
-        else if (requestError.message != null)
-            requestError.message
-        else
-            getString(R.string.error_request_default)
+        val message = when {
+            requestError.messageId != null -> getString(requestError.messageId)
+            requestError.message != null -> requestError.message
+            else -> getString(R.string.error_request_default)
+        }
 
         Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG).show()
     }
@@ -325,7 +316,7 @@ class TopicsFragment : Fragment() {
         fun onTopicsFragmentResumed()
         fun onCreateTopicButtonClicked()
         fun onSwipeRefreshLayoutClicked()
-        fun onLogIn_OutOptionClicked()
+        fun onLogInOutOptionClicked()
         fun onLogOutClicked()
         fun onAvatarSelected(username: String)
         fun onQueryTextSubmit(query: String)

@@ -14,8 +14,8 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_author">Author</string>
-    <string name="hint_title">Add a title ...</string>
-    <string name="hint_content">Add a content ...</string>
+    <string name="hint_title">Add a title …</string>
+    <string name="hint_content">Add a content …</string>
     <string name="title_send">Send</string>
     <string name="error_empty">This field cannot be empty</string>
     <string name="error_username_empty">Username cannot be empty</string>
@@ -42,7 +42,7 @@
     <string name="error_topic_not_created">Oops! Topic not created</string>
     <string name="title_list_topics">Topics</string>
     <string name="title_list_posts">Posts</string>
-    <string name="label_create_post">Creando post</string>
+    <string name="label_create_post">Creating post</string>
 
 
     <plurals name="years">
@@ -71,6 +71,17 @@
     </plurals>
     <string name="title_activity_topics">TopicsActivity</string>
     <string name="title_activity_posts">PostsActivity</string>
+    <string name="username">UserName</string>
+    <string name="name">Name</string>
+    <string name="moderator_status">Moderator status :</string>
+    <string name="no">No</string>
+    <string name="last_seen">Last seen :</string>
+    <string name="apr_19">Apr 19</string>
+    <string name="private_messages">Private messages :</string>
+    <string name="_0">0</string>
+    <string name="nombre_autor">Name author</string>
+    <string name="content_post">Content post</string>
+    <string name="created_at">Created at</string>
 
 
 </resources>

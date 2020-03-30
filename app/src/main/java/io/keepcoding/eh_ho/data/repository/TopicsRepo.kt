@@ -53,7 +53,6 @@ object TopicsRepo {
                     val handler = Handler(context.mainLooper)
                     thread {
                         val topicList = db.topicDao().getTopics()
-                        val userList = db.topicDao().getUsers()
                         val runnable = Runnable {
                             if (topicList.isNotEmpty()) {
                                 onSuccess(topicList.toModelTopic())
@@ -85,7 +84,6 @@ object TopicsRepo {
             {
                 it?.let {
                     onSuccess.invoke(DetailUser.parseUsers(it))
-                    println("El contenido del topic es : ${it}")
                 }
 
                 if (it == null)
@@ -164,14 +162,6 @@ private fun TopicEntity.toModel(): Topic = Topic(
     username = ""
 )
 
-private fun List<UserEntity>.toModelUser(): List<User> = map { it.toModel() }
-
-private fun UserEntity.toModel(): User = User(
-    id = id,
-    username = username,
-    name = name,
-    avatar_template = avatar_template
-)
 
 // TO ENTITY
 private fun List<Topic>.toEntityTopic(): List<TopicEntity> = map { it.toEntity() }

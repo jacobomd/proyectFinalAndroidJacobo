@@ -1,21 +1,16 @@
 package io.keepcoding.eh_ho.feature.topics.viewmodel
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.PostsRepo
 import io.keepcoding.eh_ho.data.repository.TopicsRepo
 import io.keepcoding.eh_ho.data.repository.UserRepo
-import io.keepcoding.eh_ho.database.TopicDatabase
 import io.keepcoding.eh_ho.domain.CreateTopicModel
 import io.keepcoding.eh_ho.domain.Topic
 import io.keepcoding.eh_ho.feature.topics.view.state.TopicManagementState
-import io.keepcoding.eh_ho.feature.topics.view.ui.TopicsActivity
 
 class TopicViewModel : ViewModel() {
 
@@ -29,9 +24,6 @@ class TopicViewModel : ViewModel() {
         }
 
     fun onViewCreatedWithNoSavedData(context: Context) {
-
-
-
         _topicManagementState.value = TopicManagementState.Loading
         TopicsRepo.getTopics(
             context,
@@ -81,7 +73,11 @@ class TopicViewModel : ViewModel() {
     }
 
     fun onAvatarSelected(username: String, context: Context) {
-        fetchDetailUser(username = username, context = context)
+        if (UserRepo.checkInternet(context)) {
+            fetchDetailUser(username = username, context = context)
+        } else {
+            _topicManagementState.value = TopicManagementState.ErrorConnection
+        }
     }
 
 
@@ -94,7 +90,7 @@ class TopicViewModel : ViewModel() {
         }
     }
 
-    fun onLogIn_OutOptionClicked () {
+    fun onLogInOutOptionClicked () {
         _topicManagementState.value = TopicManagementState.NavigateToLoginIn
     }
 
@@ -114,7 +110,7 @@ class TopicViewModel : ViewModel() {
 
     private fun fetchTopicsAndHandleResponse(context: Context) {
 
-        context?.let {
+        context.let {
             TopicsRepo.getTopics(it,
                 { topics->
                     _topicManagementState.value =

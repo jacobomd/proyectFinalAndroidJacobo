@@ -1,6 +1,5 @@
 package io.keepcoding.eh_ho.feature.topics.view.ui
 
-import android.app.ActionBar
 import android.content.Context
 import android.os.Bundle
 import android.view.*

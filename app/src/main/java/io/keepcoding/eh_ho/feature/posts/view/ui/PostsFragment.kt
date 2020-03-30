@@ -1,4 +1,4 @@
-package io.keepcoding.eh_ho.feature.posts.view
+package io.keepcoding.eh_ho.feature.posts.view.ui
 
 
 import android.content.Context
@@ -13,7 +13,7 @@ import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.repository.PostsRepo
 import io.keepcoding.eh_ho.data.repository.UserRepo
 import io.keepcoding.eh_ho.data.service.RequestError
-import io.keepcoding.eh_ho.domain.User
+import io.keepcoding.eh_ho.feature.posts.view.adapter.PostsAdapter
 import kotlinx.android.synthetic.main.fragment_posts.*
 import kotlinx.android.synthetic.main.fragment_posts.parentLayout
 import kotlinx.android.synthetic.main.fragment_posts.viewRetry
@@ -22,8 +22,8 @@ import kotlinx.android.synthetic.main.view_retry.*
 const val POSTS_FRAGMENT_TAG = "POSTS_FRAGMENT"
 
 class PostsFragment : Fragment() {
-    var listener: PostsInteractionListener? = null
-    lateinit var adapter : PostsAdapter
+    private var listener: PostsInteractionListener? = null
+    private lateinit var adapter : PostsAdapter
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -106,7 +106,7 @@ class PostsFragment : Fragment() {
         builder.setMessage("Please log in to perform this action ...")
 
         // Set a positive button and its click listener on alert dialog
-        builder.setPositiveButton("Ok") { dialog, witch ->
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
 
@@ -121,18 +121,18 @@ class PostsFragment : Fragment() {
 
         enableLoading(true)
 
-        context?.let {
+        context?.let { context ->
             PostsRepo.getPosts(
-                it,
+                context,
                 idTopic,
                 {
                     enableLoading(false)
                     adapter.setPosts(it)
                     swipeRefreshLayout.isRefreshing = false
                 },
-                {
+                { error ->
                     enableLoading(false)
-                    handleRequestError(it)
+                    handleRequestError(error)
                 }
             )
         }
@@ -155,12 +155,11 @@ class PostsFragment : Fragment() {
         listPosts.visibility = View.INVISIBLE
         viewRetry.visibility = View.VISIBLE
 
-        val message = if (requestError.messageId != null)
-            getString(requestError.messageId)
-        else if (requestError.message != null)
-            requestError.message
-        else
-            getString(R.string.error_request_default)
+        val message = when {
+            requestError.messageId != null -> getString(requestError.messageId)
+            requestError.message != null -> requestError.message
+            else -> getString(R.string.error_request_default)
+        }
 
         Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG).show()
     }
