@@ -16,10 +16,30 @@ ScrollLayoutBehavior para la desaparición del FloatingButton.
   Una vez terminado lo anterior se procede a la implementación del detalle del usuario que en este caso aparece un 
   Alert emergente al pulsar en cada avatar de cada topic.
   
+  <img src="https://github.com/jacobomd/proyectFinalAndroidJacobo/blob/master/app/src/main/res/drawable-hdpi/screenshotlogin.png" height="250">
+  
+  <img src="https://github.com/jacobomd/proyectFinalAndroidJacobo/blob/master/app/src/main/res/drawable-hdpi/screenshotdetail.png" height="250">
+  
+  . Feature-topics:
+  Como ya se parte de que tenemos funcionando desde la anterior feature el visionado de la lista de topics se procede a 
+  la implementación de la lógica en cuanto a la lista de posts por topic. A continuación se realiza la lógica del creado
+  de topic realizando implementadas sus correspondientes permisos y validaciones.
+  Al terminar con lo anterior se procede a la implementación de la creacion de un post dentro de cada topic, también 
+  con sus permisos y validaciones ya que tanto para la creación de topics como de post estan sujetas tanto a si 
+  estas logueado como si tienes conexión a internet. Tambien se procede a visualizar los avatares correspondientes en 
+  cada topic, para ello en la petición de la lista de topics no aparece dicho valor teniendo que realizar busquedas 
+  alternativas para alcanzar dicho valor. La carga de imagenes se realiza a traves de Picasso.
+  
+  <img src="https://github.com/jacobomd/proyectFinalAndroidJacobo/blob/master/app/src/main/res/drawable-hdpi/screenshottopics.png" height="250">
+  
+  <img src="https://github.com/jacobomd/proyectFinalAndroidJacobo/blob/master/app/src/main/res/drawable-hdpi/screenshotposts.png" height="250">
+  
 . Feature-search:
   En esta feature se genera toda la lógica para el filtrado de topic en la lista de topics. Para ello se utiliza
   un searchView. Una vez implementado se realizan mejoras para que funcione correctamente también con la persistencia
   en cuanto a cuando no tenemos conexión a internet.
+  
+  <img src="https://github.com/jacobomd/proyectFinalAndroidJacobo/blob/master/app/src/main/res/drawable-hdpi/screenshotsearch.png" height="250">
   
   
  . Feature-persistence:
@@ -30,6 +50,8 @@ ScrollLayoutBehavior para la desaparición del FloatingButton.
   Ademas se generan permisos para cuando no tienes conexion y estas en modo offline, ademas de por medio de mensajes 
   indicar si se está en modo offline. Las acciones restringidas cuando se está en modo offline son las de creacion
   de topics como la creación de post, con sus respectivos mensajes explicativos.
+  
+  <img src="https://github.com/jacobomd/proyectFinalAndroidJacobo/blob/master/app/src/main/res/drawable-hdpi/screenshotpersistence.png" height="250">
   
   
  . Feature-improvements:
